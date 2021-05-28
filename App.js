@@ -8,7 +8,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <View style={styles.container}>
-        <Button title="hey!"></Button>
+        <Button title="hey"></Button>
       </View>
     </SafeAreaProvider>
 
