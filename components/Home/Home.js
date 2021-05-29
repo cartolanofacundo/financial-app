@@ -18,7 +18,7 @@ export default Home =({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Button onPress={() => pressBtn('Transactions')} title="Transactions"></Button>
+      <Button onPress={() => pressBtn('Transactions')} title="Transaction"></Button>
       <Button onPress={() => pressBtn('TransactionsHistory')} title="TransactionsHistory"></Button>
     </View>
   );
