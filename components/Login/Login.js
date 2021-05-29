@@ -18,7 +18,7 @@ export default Login =({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Button onPress={pressBtn} title="CreateAccount"></Button>
+      <Button onPress={pressBtn} title="CreateAccounts"></Button>
     </View>
   );
 }
