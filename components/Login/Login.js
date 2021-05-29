@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, View, StyleSheet } from "react-native";
 
-export default Home =({ navigation }) => {
-  const pressBtn = (route) => {
-    navigation.navigate(route);
+export default Login =({ navigation }) => {
+  const pressBtn = () => {
+    navigation.navigate("Registrarse");
   };
 
 
@@ -18,8 +18,7 @@ export default Home =({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Button onPress={() => pressBtn('Transactions')} title="Transactions"></Button>
-      <Button onPress={() => pressBtn('TransactionsHistory')} title="TransactionsHistory"></Button>
+      <Button onPress={pressBtn} title="CreateAccount"></Button>
     </View>
   );
 }
