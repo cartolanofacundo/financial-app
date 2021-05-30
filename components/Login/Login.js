@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { ThemeProvider, SafeAreaProvider, Text } from "react-native-elements";
 import { View, StyleSheet } from "react-native";
-import { Button, Input, Image } from "react-native-elements";
+import { Button, Image } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Theme } from "../../Theme/Theme";
+import { InputCustom } from "../Custom/InputCustom";
 
 export const Login = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState("");
-  const [passwordFocus, setPasswordFocus] = useState(false);
-  const [emailFocus, setEmailFocus] = useState(false);
+  const [password, setPassword] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const handleSubmit = () => {
-    if (email === "") {
+    if (email === "" || password === "") {
       setErrorMessage("El email es requerido");
     } else {
       setErrorMessage("");
@@ -35,59 +36,29 @@ export const Login = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={{
-          uri: "https://user-images.githubusercontent.com/5962998/65694309-a825f000-e043-11e9-8382-db0dba0851e3.png",
-        }}
+        source={require("../../assets/Imagenes/google-wallet.png")}
         style={{ width: 200, height: 200 }}
       />
 
-      <Image
-        containerStyle={{}}
-        onLongPress={() => console.log("onLongPress()")}
-        onPress={() => console.log("onPress()")}
-        placeholderStyle={{}}
-        transitionDuration={1000}
-        source={{
-          uri: "https://user-images.githubusercontent.com/5962998/65694309-a825f000-e043-11e9-8382-db0dba0851e3.png",
-        }}
-        style={{ width: 200, height: 200 }}
-      />
-
-      <Input
+      <InputCustom
         placeholder="Email"
-        placeholderTextColor="#b9b5b6"
-        renderErrorMessage="El email es requerido"
+        renderErrorMessage={errorMessage}
         leftIcon={<Icon name="email" size={26} />}
-        leftIconContainerStyle={styles.leftIcon}
-        inputContainerStyle={
-          emailFocus ? styles.inputFocused : styles.inputContainer
-        }
-        containerStyle={styles.formContainer}
-        errorMessage={errorMessage}
         onChangeText={handleOnchangeMail}
-        onFocus={() => setEmailFocus(true)}
-        onBlur={() => setEmailFocus(false)}
-        errorStyle={styles.error}
-      ></Input>
-      <Input
+      ></InputCustom>
+      <InputCustom
         placeholder="Contraseña"
-        placeholderTextColor="#b9b5b6"
         secureTextEntry={true}
-        renderErrorMessage="La contraseña es requerida"
+        renderErrorMessage={errorMessage}
         leftIcon={<Icon name="key" size={26} />}
         leftIconContainerStyle={styles.leftIcon}
-        containerStyle={styles.formContainer}
-        inputContainerStyle={
-          passwordFocus ? styles.inputFocused : styles.inputContainer
-        }
-        onFocus={() => setPasswordFocus(true)}
-        onBlur={() => setPasswordFocus(false)}
-      ></Input>
+      ></InputCustom>
       <Button
         title="Ingresar"
         buttonStyle={styles.button}
         onPress={handleSubmit}
         loading={loading}
+        disabled={buttonDisabled}
       ></Button>
 
       <View style={styles.registration}>
@@ -111,33 +82,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 70,
   },
-  formContainer: {
-    marginTop: 5,
-    marginBottom: 5,
-  },
   hasNotAccount: {
     margin: 10,
     marginVertical: 50,
     color: "blue",
-  },
-  inputContainer: {
-    borderColor: "transparent",
-    color: "black",
-    backgroundColor: "#f3efee",
-    borderWidth: 1,
-    borderRadius: 50,
-    paddingLeft: 20,
-  },
-  inputFocused: {
-    borderColor: Theme.colors.primary,
-    color: "black",
-    backgroundColor: "#f3efee",
-    borderWidth: 1,
-    borderRadius: 50,
-    paddingLeft: 20,
-  },
-  leftIcon: {
-    marginRight: 10,
   },
   button: {
     width: 200,
@@ -152,8 +100,5 @@ const styles = StyleSheet.create({
   },
   vinculoRegistrarse: {
     color: "red",
-  },
-  error: {
-    paddingLeft: 20,
   },
 });
