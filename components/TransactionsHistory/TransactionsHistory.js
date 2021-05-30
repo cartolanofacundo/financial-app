@@ -1,20 +1,11 @@
-import React from "react";
-import { Button, View, StyleSheet } from "react-native";
+import React from 'react';
+import { Button, View, StyleSheet } from 'react-native';
 
-export const TransactionsHistory = () => {
+export const TransactionsHistory = ({navigation}) => {
+
     const pressBtn = () => {
         navigation.navigate("Transactions");
       };
-    
-    
-      const styles = StyleSheet.create({
-        container: {
-          flex: 1,
-          backgroundColor: "#fff",
-          alignItems: "center",
-          justifyContent: "center",
-        },
-      });
     
       return (
         <View style={styles.container}>
@@ -22,3 +13,12 @@ export const TransactionsHistory = () => {
         </View>
       );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

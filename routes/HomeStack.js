@@ -1,11 +1,13 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import Transactions from "../Components/Transactions/Transactions";
-import {TransactionsHistory} from "../Components/TransactionsHistory/TransactionsHistory"
-import Home from "../Components/Home/Home";
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Transactions } from '../Components/Transactions/Transactions';
+import { TransactionsHistory } from '../Components/TransactionsHistory/TransactionsHistory';
+import { Home } from '../Components/Home/Home';
 
 const HomeStack = createStackNavigator();
-export default HomeNavigator = () => {
+
+export const HomeNavigator = () => {
+
   return (
     <HomeStack.Navigator initialRouteName="Home" headerMode="screen">
       <HomeStack.Screen name="Home" component={Home} />

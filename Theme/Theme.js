@@ -1,4 +1,4 @@
-export default theme = {
+export const theme = {
     colors: {
       primary: '#7350FF',
       secondary: '#0081CC',

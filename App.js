@@ -1,13 +1,12 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-
-import HomeNavigator from "./routes/HomeStack";
-import LoginNavigator from "./routes/LoginStack"
-import { NavigationContainer } from "@react-navigation/native";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { HomeNavigator } from './routes/HomeStack';
+import { LoginNavigator } from './routes/LoginStack';
 
 export default function App() {
 
-  const singedIn = false;
+  const singedIn = true;
 
   return (
     <NavigationContainer>

@@ -1,20 +1,10 @@
-import React from "react";
-import { Button, View, StyleSheet } from "react-native";
+import React from 'react';
+import { Button, View, StyleSheet } from 'react-native';
 
-export default Home =({ navigation }) => {
+export const Home = ({ navigation }) => {
   const pressBtn = (route) => {
     navigation.navigate(route);
   };
-
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#fff",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  });
 
   return (
     <View style={styles.container}>
@@ -23,3 +13,13 @@ export default Home =({ navigation }) => {
     </View>
   );
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
