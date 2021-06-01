@@ -29,8 +29,8 @@ export const InputCustom = ({placeholder='', renderErrorMessage='', leftIcon, se
 
 const styles = StyleSheet.create({
   formContainer: {
-    marginTop: 5,
-    marginBottom: 5,
+    marginTop: 2,
+    marginBottom: 2,
   },
   inputContainer: {
     borderColor: "transparent",

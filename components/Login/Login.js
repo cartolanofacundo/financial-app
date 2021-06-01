@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { ThemeProvider, SafeAreaProvider, Text } from "react-native-elements";
-import { View, StyleSheet } from "react-native";
-import { Button, Image } from "react-native-elements";
+import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
+import { Button, Image, Text } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Theme } from "../../Theme/Theme";
 import { InputCustom } from "../Custom/InputCustom";
@@ -35,41 +34,53 @@ export const Login = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require("../../assets/Imagenes/google-wallet.png")}
-        style={{ width: 200, height: 200 }}
-      />
+      <ImageBackground source={require("../../assets/Imagenes/background.png")} style={styles.background}>
+        <Image
+          source={require("../../assets/Imagenes/google-wallet.png")}
+          style={{ width: 200, height: 200 }}
+        />
 
-      <InputCustom
-        placeholder="Email"
-        renderErrorMessage={errorMessage}
-        leftIcon={<Icon name="email" size={26} />}
-        onChangeText={handleOnchangeMail}
-      ></InputCustom>
-      <InputCustom
-        placeholder="Contraseña"
-        secureTextEntry={true}
-        renderErrorMessage={errorMessage}
-        leftIcon={<Icon name="key" size={26} />}
-        leftIconContainerStyle={styles.leftIcon}
-      ></InputCustom>
-      <Button
-        title="Ingresar"
-        buttonStyle={styles.button}
-        onPress={handleSubmit}
-        loading={loading}
-        disabled={buttonDisabled}
-      ></Button>
+        <View style={styles.welcomeTextContainer}>
+        <Text h4>¡Te damos la bienvenida!</Text>
 
-      <View style={styles.registration}>
-        <Text style={styles.hasNotAccount}>¿No tenés cuenta?</Text>
-        <Text
-          onPress={() => navigateTo("Registrarse")}
-          style={styles.vinculoRegistrarse}
-        >
-          Registrarse
-        </Text>
-      </View>
+        <Text>Logueate para continuar</Text>
+
+        </View>
+
+        
+
+        
+        <InputCustom
+          placeholder="Email"
+          renderErrorMessage={errorMessage}
+          leftIcon={<Icon name="email" size={26} />}
+          onChangeText={handleOnchangeMail}
+        ></InputCustom>
+        <InputCustom
+          placeholder="Contraseña"
+          secureTextEntry={true}
+          renderErrorMessage={errorMessage}
+          leftIcon={<Icon name="key" size={26} />}
+          leftIconContainerStyle={styles.leftIcon}
+        ></InputCustom>
+        <Button
+          title="Ingresar"
+          buttonStyle={styles.button}
+          onPress={handleSubmit}
+          loading={loading}
+          disabled={buttonDisabled}
+        ></Button>
+
+        <View style={styles.registration}>
+          <Text style={styles.hasNotAccount}>¿No tenés cuenta?</Text>
+          <Text
+            onPress={() => navigateTo("Registrarse")}
+            style={styles.vinculoRegistrarse}
+          >
+            Registrarse
+          </Text>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -78,27 +89,43 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingTop: 70,
+    justifyContent: "center",
   },
   hasNotAccount: {
-    margin: 10,
-    marginVertical: 50,
-    color: "blue",
+    marginRight: 5,
+    fontWeight: "bold",
   },
   button: {
     width: 200,
-    margin: 20,
+    margin: 15,
     borderRadius: 30,
+    paddingVertical: 10,
   },
   registration: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: "stretch",
+    justifyContent: "space-between",
+    marginTop: 25,
+
   },
   vinculoRegistrarse: {
-    color: "red",
+    color: Theme.colors.primary,
+    fontWeight: "bold",
   },
+  background: {
+    // flex: 1,
+    resizeMode: "cover",
+    // justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    alignItems: "center",
+    // height: Dimensions.get('window').height,
+    // width: Dimensions.get('window').width,
+  },
+  welcomeTextContainer: {
+    marginTop: 50,
+    marginBottom: 20,
+    alignItems: "center",
+  }
 });
