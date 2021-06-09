@@ -17,6 +17,7 @@ export const Login = ({ navigation }) => {
       setErrorMessage("El email es requerido");
     } else {
       setErrorMessage("");
+      setButtonDisabled(false);
       setLoading(true);
     }
   };
@@ -36,8 +37,8 @@ export const Login = ({ navigation }) => {
     <View style={styles.container}>
       <ImageBackground source={require("../../assets/Imagenes/background.png")} style={styles.background}>
         <Image
-          source={require("../../assets/Imagenes/google-wallet.png")}
-          style={{ width: 200, height: 200 }}
+          source={require("../../assets/Imagenes/finance.png")}
+          style={{ width: 150, height: 150 }}
         />
 
         <View style={styles.welcomeTextContainer}>
@@ -68,7 +69,6 @@ export const Login = ({ navigation }) => {
           buttonStyle={styles.button}
           onPress={handleSubmit}
           loading={loading}
-          disabled={buttonDisabled}
         ></Button>
 
         <View style={styles.registration}>
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     margin: 15,
     borderRadius: 30,
     paddingVertical: 10,
+    backgroundColor: Theme.colors.primary,
   },
   registration: {
     display: "flex",
