@@ -8,7 +8,7 @@ const LoginStack = createStackNavigator();
 export const LoginNavigator = () => {
   
   return (
-    <LoginStack.Navigator initialRouteName="Login" headerMode="screen">
+    <LoginStack.Navigator initialRouteName="Login" headerMode="none">
       <LoginStack.Screen name="Login" component={Login} />
       <LoginStack.Screen name="Registrarse" component={CreateAccount} />
     </LoginStack.Navigator>
