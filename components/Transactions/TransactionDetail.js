@@ -20,10 +20,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Transactions = ({ navigation, route }) => {
+export const TransactionDetail = ({ navigation, route }) => {
   const [state, setState] = useState(initialState);
 
-  const title = route.params.title;
+  // const title = route.params.title;
+  const title = "hola";
 
   const handleTap = (type, value) => {
     setState((state) => calculate(type, value, state));
@@ -31,12 +32,13 @@ export const Transactions = ({ navigation, route }) => {
 
   return (
     <View style={styles.mainContainer}>
-      <TransactionHedaer title={title} />
+      HOLA!
+      {/* <TransactionHedaer title={title} />
       <TransactionInsert
         value={parseFloat(state.currentValue).toLocaleString()}
         style={styles.insertContainer}
       />
-      <Calculator onPressFunction={handleTap} navigation={navigation} />
+      <Calculator onPressFunction={handleTap} navigation={navigation} /> */}
     </View>
   );
 };
