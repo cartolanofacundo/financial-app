@@ -8,16 +8,14 @@ import { Theme } from "./Theme/Theme";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
-  const singedIn = true;
+  const singedIn = false;
 
   return (
-    <ThemeProvider theme={Theme}>
-      <SafeAreaProvider>
-        <NavigationContainer>
-          {singedIn ? <HomeNavigator /> : <LoginNavigator />}
-        </NavigationContainer>
-      </SafeAreaProvider>
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        {singedIn ? <HomeNavigator /> : <LoginNavigator />}
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 
