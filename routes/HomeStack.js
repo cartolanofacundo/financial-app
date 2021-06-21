@@ -14,7 +14,7 @@ export const HomeNavigator = () => {
     <HomeStack.Navigator initialRouteName="Home" headerMode="screen">
       <HomeStack.Screen name="Home" component={Home} />
       <HomeStack.Screen name="SelectType" component={SelectType} />
-      <HomeStack.Screen name="Transactions" component={Transactions} />
+      {/* <HomeStack.Screen name="Transactions" component={Transactions} />
       <HomeStack.Screen
         name="TransactionsDetail"
         component={TransactionDetail}
@@ -22,7 +22,7 @@ export const HomeNavigator = () => {
       <HomeStack.Screen
         name="TransactionsHistory"
         component={TransactionsHistory}
-      />
+      /> */}
       <HomeStack.Screen name="Registrarse" component={CreateAccount} />
     </HomeStack.Navigator>
   );

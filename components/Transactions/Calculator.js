@@ -35,7 +35,7 @@ export const Calculator = ({ onPressFunction, navigation }) => {
 
   const continuar = () => {
     console.log("click en continuar");
-    navigation.navigate(Transactions, { screen: "TransactionDetail" });
+    navigation.navigate("TransactionDetail");
     // navigation.navigate("TransactionDetail");
   };
 

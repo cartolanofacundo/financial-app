@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   // },
 });
 
-export const TransactionInsert = ({ value }) => {
+export const TransactionInsert = ({ value, isInDetails }) => {
   // export const TransactionInsert = () => {
   const [importe, setImporte] = useState(0);
 
@@ -37,15 +37,18 @@ export const TransactionInsert = ({ value }) => {
         containerStyle={{ width: 50, color: "white" }}
         inputContainerStyle={{}}
         inputStyle={{}}
+        disabled={isInDetails}
       />
-      <Icon
-        color="red"
-        name="backspace"
-        onLongPress={() => console.log("onLongPress()")}
-        onPress={() => console.log("onPress()")}
-        size={40}
-        type="material"
-      />
+      {!isInDetails && (
+        <Icon
+          color="red"
+          name="backspace"
+          onLongPress={() => console.log("onLongPress()")}
+          onPress={() => console.log("onPress()")}
+          size={40}
+          type="material"
+        />
+      )}
     </View>
   );
 };

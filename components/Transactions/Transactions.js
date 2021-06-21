@@ -23,7 +23,10 @@ const styles = StyleSheet.create({
 export const Transactions = ({ navigation, route }) => {
   const [state, setState] = useState(initialState);
 
-  const title = route.params.title;
+  // const title = route.params.title;
+
+  const title = "Titutlo";
+  const isInDetails = false;
 
   const handleTap = (type, value) => {
     setState((state) => calculate(type, value, state));
@@ -35,6 +38,7 @@ export const Transactions = ({ navigation, route }) => {
       <TransactionInsert
         value={parseFloat(state.currentValue).toLocaleString()}
         style={styles.insertContainer}
+        isInDetails={isInDetails}
       />
       <Calculator onPressFunction={handleTap} navigation={navigation} />
     </View>
