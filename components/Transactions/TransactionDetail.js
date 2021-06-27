@@ -117,15 +117,9 @@ export const TransactionDetail = ({
     setSelectedIndex(selectedIndex);
   };
 
-  const pressBtn = (route) => {
-    navigation.navigate(route);
-  };
-
   const accountsButtons = accounts.map((account) => {
     return account.title;
   });
-
-  const [expanded, setExpanded] = useState(false);
 
   return (
     <View style={{ flex: 1 }}>
