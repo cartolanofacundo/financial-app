@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const icons = [
+export const IconList = [
     {
         type: "font-awesome",
         name: "university",

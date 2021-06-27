@@ -1,38 +1,51 @@
 import React, { useState } from "react";
-import { Text, Button, InputCustom } from "react-native-elements";
+import { Text, Button, ButtonGroup } from "react-native-elements";
 import { View } from "react-native";
-import { CategoriesList } from "./CategoriesList";
-import { iconList } from "./IconList";
+import { categories } from "./CategoriesList";
+import { IconList } from "./IconList";
 import { Theme } from "../../Theme/Theme";
+import { ScrollView } from "react-native-gesture-handler";
+import { InputCustom } from "../Custom/InputCustom";
 
-export function CreateCategory() {
+
+export function CreateCategory({navigation}) {
   const [title, setTitle] = useState("");
   const [icon, setIcon] = useState((type = "material"), (name = "super"));
   const [newCategory, setNewCategory] = useState("");
   const [newIcon, setNewIcon] = useState({ type: "font-awesome", name: "new" });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // const inputCategory = () => {
-  //   setNewCategory();
-  // };
+  const inputCategory = (value) => {
+    setNewCategory(value);
+  };
+
+  let categories1 = categories;
+
 
   const handleSubmit = () => {
     if (newCategory === "" || newIcon.name === "new") {
       setErrorMessage("Debe ingresar un nombre y un icono");
     } else {
-      setErrorMessage("");
-      setLoading(true);
-      //   iconList tiene que agregarla
-      CategoriesList = [...CategoriesList, {title: newCategory,icon: newIcon}];
+      setErrorMessage("Todo bien");
+      //   EL BACK! tiene que agregar la nueva categoría
+      categories1 = [
+        ...categories1,
+        { title: newCategory, icon: newIcon },
+      ];
+      navigation.goBack();
+      console.log(categories1);
     }
+    console.log(errorMessage);
   };
 
-  const categoryIcons = iconList.map((icon) => {
+  const categoryIcons = IconList.map((icon) => {
     return icon.name;
   });
 
   const handleOnchangeIcon = (selectedIndex) => {
     setSelectedIndex(selectedIndex);
-    setNewIcon(iconList[selectedIndex])
+    setNewIcon(IconList[selectedIndex]);
   };
 
   return (
@@ -45,7 +58,7 @@ export function CreateCategory() {
       </View>
 
       <ScrollView
-        style={styles.accountContainer}
+        // style={styles.accountContainer}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
       >
@@ -74,14 +87,13 @@ export function CreateCategory() {
       </ScrollView>
 
       <InputCustom
-        placeholder="Nombre de la categoría"
+        placeholder="Nombre categoría"
         onChangeText={inputCategory}
-      ></InputCustom>
+      />
       <Button
         title="Guardar"
-        buttonStyle={styles.button}
+        // buttonStyle={styles.button}
         onPress={handleSubmit}
-        loading={loading}
       ></Button>
     </View>
   );

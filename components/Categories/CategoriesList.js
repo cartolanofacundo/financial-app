@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const categories = [
+export let categories = [
     {
       title: "Supermercado",
       icon: {
