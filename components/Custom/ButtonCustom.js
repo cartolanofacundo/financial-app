@@ -8,6 +8,9 @@ export const ButtonCustom = ({
   widthCustom = 150,
   onPressFunction,
   type = "solid",
+  icon = {},
+  disabled = false,
+  disabledStyle = {},
 }) => {
   return (
     <Button
@@ -23,7 +26,10 @@ export const ButtonCustom = ({
         justifyContent: "center",
         alignItems: "center",
       }}
+      icon={icon}
       type={type}
+      disabled={disabled}
+      disabledStyle={disabledStyle}
     />
   );
 };
