@@ -11,9 +11,9 @@ export function CreateCategory() {
   const [newCategory, setNewCategory] = useState("");
   const [newIcon, setNewIcon] = useState({ type: "font-awesome", name: "new" });
 
-  const inputCategory = () => {
-    setNewCategory();
-  };
+  // const inputCategory = () => {
+  //   setNewCategory();
+  // };
 
   const handleSubmit = () => {
     if (newCategory === "" || newIcon.name === "new") {

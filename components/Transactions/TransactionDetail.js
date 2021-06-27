@@ -7,70 +7,77 @@ import { Button, Text, ButtonGroup, ListItem } from "react-native-elements";
 import { TransactionHeader } from "./TransactionHeader";
 import { ScrollView } from "react-native-gesture-handler";
 import { Theme } from "../../Theme/Theme";
-import { Select } from "../Categories/Select";
-import { categories } from "../Categories/CategoriesList";
+
+const accounts = [
+  {
+    id: "60ca52399f8347849c473059",
+    title: "Banco",
+    icon: {
+      type: "font-awesome",
+      name: "bank",
+    },
+    balance: 20,
+  },
+  {
+    id: "60ca52399f8347849c473058",
+    title: "Billetera",
+    icon: {
+      type: "font-awesome",
+      name: "money",
+    },
+    balance: 20,
+  },
+  {
+    id: "60ca52399f8347849c453059",
+    title: "Banco",
+    icon: {
+      type: "font-awesome",
+      name: "bank",
+    },
+    balance: 20,
+  },
+  {
+    id: "60ca52399f8347849c473658",
+    title: "Billetera",
+    icon: {
+      type: "font-awesome",
+      name: "money",
+    },
+    balance: 20,
+  },
+  {
+    id: "60ca52399f8347849c478059",
+    title: "Banco",
+    icon: {
+      type: "font-awesome",
+      name: "bank",
+    },
+    balance: 20,
+  },
+  {
+    id: "60ca52399f8347849c473068",
+    title: "Billetera",
+    icon: {
+      type: "font-awesome",
+      name: "money",
+    },
+    balance: 20,
+  },
+];
 
 export const TransactionDetail = ({
   navigation,
+  route,
   type = "ingreso",
   amount = "200",
 }) => {
-  const accounts = [
-    {
-      id: "60ca52399f8347849c473059",
-      title: "Banco",
-      icon: {
-        type: "font-awesome",
-        name: "bank",
-      },
-      balance: 20,
-    },
-    {
-      id: "60ca52399f8347849c473058",
-      title: "Billetera",
-      icon: {
-        type: "font-awesome",
-        name: "money",
-      },
-      balance: 20,
-    },
-    {
-      id: "60ca52399f8347849c453059",
-      title: "Banco",
-      icon: {
-        type: "font-awesome",
-        name: "bank",
-      },
-      balance: 20,
-    },
-    {
-      id: "60ca52399f8347849c473658",
-      title: "Billetera",
-      icon: {
-        type: "font-awesome",
-        name: "money",
-      },
-      balance: 20,
-    },
-    {
-      id: "60ca52399f8347849c478059",
-      title: "Banco",
-      icon: {
-        type: "font-awesome",
-        name: "bank",
-      },
-      balance: 20,
-    },
-    {
-      id: "60ca52399f8347849c473068",
-      title: "Billetera",
-      icon: {
-        type: "font-awesome",
-        name: "money",
-      },
-      balance: 20,
-    },
-  ];
+  let title2 = "";
+
+  if (route.params !== undefined) {
+    title2 = route.params.title2;
+  } else {
+    title2 = "Sin seleccionar";
+  }
 
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
@@ -79,6 +86,7 @@ export const TransactionDetail = ({
   const [isSelectedYesterday, setIsSelectedYesterday] = useState(false);
   const [isSelectedCustom, setIsSelectedCustom] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [canContinue, setCanContinue] = useState(false);
 
   const handleOnchangeDescription = (value) => {
     setDescription(value);
@@ -130,59 +138,14 @@ export const TransactionDetail = ({
 
       <View style={styles.mainContainer}>
         <View style={styles.detailContainer}>
+          <Text style={styles.title}>Categoría: {title2}</Text>
           <ButtonCustom
             containerStyle={styles.dateButton}
             type={isSelectedToday ? "solid" : "outline"}
-            title="Categoria"
-            onPressFunction={() => navigation.navigate("SelectCategory")}
-            widthCustom={90}
+            title="Seleccionar categoría"
+            onPressFunction={() => navigation.navigate("CategoryNavigator")}
+            widthCustom={250}
           />
-
-          {/* <Select /> */}
-          {/* <Text style={styles.title}>Categoría</Text>
-
-          <ListItem.Accordion
-            content={
-              <>
-                <ListItem.Content>
-                  <ListItem.Title>
-                    Creá o seleccioná una categoria
-                  </ListItem.Title>
-                </ListItem.Content>
-              </>
-            }
-            isExpanded={expanded}
-            // noRotation={true}
-            onPress={() => {
-              setExpanded(!expanded);
-            }}
-            containerStyle={{ width: 300 }}
-          >
-            <ScrollView style={{ flex: 1 }}>
-              <ListItem
-                key="addCategory"
-                onPress={pressBtn}
-                bottomDivider
-                containerStyle={{ width: 300 }}
-              >
-                <ListItem.Content>
-                  <ListItem.Title>Agregar</ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-              {categories.map((category, key) => (
-                <ListItem
-                  key={key}
-                  onPress={pressBtn}
-                  bottomDivider
-                  containerStyle={{ width: 300 }}
-                >
-                  <ListItem.Content>
-                    <ListItem.Title>{category.title}</ListItem.Title>
-                  </ListItem.Content>
-                </ListItem>
-              ))}
-            </ScrollView>
-          </ListItem.Accordion> */}
         </View>
 
         <View style={styles.detailContainer}>
@@ -268,6 +231,11 @@ export const TransactionDetail = ({
           <ButtonCustom
             title="Continuar"
             onPressFunction={() => navigation.navigate("TransactionComplete")}
+            disabled={true}
+            disabledStyle={{
+              // borderWidth: 2,
+              backgroundColor: "grey",
+            }}
           />
         </View>
       </View>

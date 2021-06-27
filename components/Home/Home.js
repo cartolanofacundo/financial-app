@@ -6,7 +6,7 @@ export const Home = ({ navigation }) => {
     <View style={styles.container}>
       <Button
         title="Transacciones"
-        onPress={() => navigation.navigate("TransactionsNavigator")}
+        onPress={() => navigation.navigate("TransactionFlowNavigator")}
       />
     </View>
   );

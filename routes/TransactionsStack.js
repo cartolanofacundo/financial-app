@@ -5,7 +5,6 @@ import { TransactionDetail } from "../Components/Transactions/TransactionDetail"
 // import { SelectType } from "../Components/Transactions/SelectType";
 // import { CalendarCustom } from "../Components/Transactions/CalendarCustom";
 import { TransactionComplete } from "../Components/Transactions/TransactionComplete";
-import { Select } from "../Components/Categories/Select";
 
 const TransactionsStack = createStackNavigator();
 
@@ -14,7 +13,7 @@ export const TransactionsNavigator = () => {
     <TransactionsStack.Navigator
       initialRouteName="TransactionHome"
       headerMode="none"
-      mode="modal"
+      // mode="modal"
     >
       {/* <TransactionsStack.Screen name="SelectType" component={SelectType} /> */}
       <TransactionsStack.Screen
@@ -30,12 +29,6 @@ export const TransactionsNavigator = () => {
       <TransactionsStack.Screen
         name="TransactionComplete"
         component={TransactionComplete}
-      />
-
-      <TransactionsStack.Screen
-        name="SelectCategory"
-        component={Select}
-        mode="modal"
       />
     </TransactionsStack.Navigator>
   );
