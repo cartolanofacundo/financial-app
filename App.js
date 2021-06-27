@@ -7,6 +7,7 @@ import { ThemeProvider } from "react-native-elements";
 import { Theme } from "./Theme/Theme";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { TransactionsNavigator } from "./routes/TransactionsStack";
+import { RootNavigator } from "./routes/Root";
 
 export default function App() {
   const singedIn = true;
@@ -14,8 +15,8 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        {/* {singedIn ? <HomeNavigator /> : <LoginNavigator />} */}
-        <TransactionsNavigator />
+        {singedIn ? <RootNavigator /> : <LoginNavigator />}
+        {/* <TransactionsNavigator /> */}
       </NavigationContainer>
     </SafeAreaProvider>
   );

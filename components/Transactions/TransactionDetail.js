@@ -1,238 +1,265 @@
-import { View } from "react-native";
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
-import { TransactionHedaer } from "./TransactionHedaer";
-import { TransactionInsert } from "./TransactionInsert";
-// import { Calculator } from "./Calculator";
-import calculate, { initialState } from "./calculate";
-import {
-  ListItem,
-  Avatar,
-  Input,
-  ButtonGroup,
-  Button,
-} from "react-native-elements";
-import { CalendarCustom } from "./CalendarCustom";
+import { View, StyleSheet } from "react-native";
+import { InputCustom } from "../Custom/InputCustom";
 
-const styles = StyleSheet.create({
-  mainContainer: {
-    backgroundColor: "#2ECC71",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    height: 100,
-  },
-  insertContainer: {
-    display: "flex",
-    alignItems: "flex-end",
-  },
-});
+import { ButtonCustom } from "../Custom/ButtonCustom";
+import { Button, Text, ButtonGroup } from "react-native-elements";
+import { TransactionHeader } from "./TransactionHeader";
+import { ScrollView } from "react-native-gesture-handler";
+import { Theme } from "../../Theme/Theme";
 
-const categoriesEgresos = [
-  {
-    title: "Supermercado",
-    icon: {
-      type: "material",
-      name: "super",
+export const TransactionDetail = ({
+  navigation,
+  type = "ingreso",
+  amount = "200",
+}) => {
+  const accounts = [
+    {
+      id: "60ca52399f8347849c473059",
+      title: "Banco",
+      icon: {
+        type: "font-awesome",
+        name: "bank",
+      },
+      balance: 20,
     },
-  },
-  {
-    title: "Alquiler",
-    icon: {
-      type: "material",
-      name: "alquiler",
+    {
+      id: "60ca52399f8347849c473058",
+      title: "Billetera",
+      icon: {
+        type: "font-awesome",
+        name: "money",
+      },
+      balance: 20,
     },
-  },
-  {
-    title: "Expensas",
-    icon: {
-      type: "material",
-      name: "expensas",
+    {
+      id: "60ca52399f8347849c453059",
+      title: "Banco",
+      icon: {
+        type: "font-awesome",
+        name: "bank",
+      },
+      balance: 20,
     },
-  },
-];
-const categoriesIngresos = [
-  {
-    title: "Sueldo",
-    icon: {
-      type: "material",
-      name: "sueldo",
+    {
+      id: "60ca52399f8347849c473658",
+      title: "Billetera",
+      icon: {
+        type: "font-awesome",
+        name: "money",
+      },
+      balance: 20,
     },
-  },
-  {
-    title: "Freelance",
-    icon: {
-      type: "material",
-      name: "free",
+    {
+      id: "60ca52399f8347849c478059",
+      title: "Banco",
+      icon: {
+        type: "font-awesome",
+        name: "bank",
+      },
+      balance: 20,
     },
-  },
-  {
-    title: "Venta de sahumerios",
-    icon: {
-      type: "material",
-      name: "venta",
+    {
+      id: "60ca52399f8347849c473068",
+      title: "Billetera",
+      icon: {
+        type: "font-awesome",
+        name: "money",
+      },
+      balance: 20,
     },
-  },
-];
+  ];
 
-const cuentas = [
-  {
-    title: "Banco",
-    icon: {
-      type: "material",
-      name: "venta",
-    },
-    balance: 2000,
-  },
-  {
-    title: "Billetera",
-    icon: {
-      type: "material",
-      name: "venta",
-    },
-    balance: 2000,
-  },
-  {
-    title: "Ahorros",
-    icon: {
-      type: "material",
-      name: "venta",
-    },
-    balance: 2000,
-  },
-];
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [account, setAccount] = useState("");
+  const [isSelectedToday, setIsSelectedToday] = useState(true);
+  const [isSelectedYesterday, setIsSelectedYesterday] = useState(false);
+  const [isSelectedCustom, setIsSelectedCustom] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-export const TransactionDetail = ({ navigation, route }) => {
-  const [state, setState] = useState(initialState);
-
-  // const title = route.params.title;
-  const title = "Egresos";
-  const isInDetails = true;
-  const [categories, setCategories] = useState(categoriesIngresos);
-
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const [selectedIndexes, setSelectedIndexes] = React.useState([]);
-
-  const togggleCategories = () => {
-    if (title === "Egresos") {
-      setCategories(categoriesEgresos);
-    }
+  const handleOnchangeDescription = (value) => {
+    setDescription(value);
   };
 
-  const [expanded, setExpanded] = React.useState(true);
+  const handleOnchangeDateToday = (value) => {
+    setDate(value);
+    setIsSelectedToday(true);
+    setIsSelectedYesterday(false);
+    setIsSelectedCustom(false);
+  };
 
-  const handlePress = () => setExpanded(!expanded);
+  const handleOnchangeDateYesterday = (value) => {
+    setDate(value);
+    setIsSelectedToday(false);
+    setIsSelectedYesterday(true);
+    setIsSelectedCustom(false);
+  };
+
+  const handleOnchangeDateCustom = (value) => {
+    setDate(value);
+    setIsSelectedToday(false);
+    setIsSelectedYesterday(false);
+    setIsSelectedCustom(true);
+  };
+
+  const handleOnchangeAccount = (selectedIndex) => {
+    setSelectedIndex(selectedIndex);
+  };
+
+  const accountsButtons = accounts.map((account) => {
+    return account.title;
+  });
+
   return (
-    <View style={styles.mainContainer}>
-      <TransactionHedaer title={title} />
-      <TransactionInsert
-        value={parseFloat(state.currentValue).toLocaleString()}
-        style={styles.insertContainer}
-        isInDetails={isInDetails}
-      />
+    <View style={{ flex: 1 }}>
+      <TransactionHeader navigation={navigation} icon="arrow-left" />
 
-      <ListItem.Accordion
-        content={
-          <>
-            {/* <Icon name="place" size={30} /> */}
-            <ListItem.Content>
-              <ListItem.Title>List Accordion</ListItem.Title>
-            </ListItem.Content>
-          </>
-        }
-        isExpanded={expanded}
-        onPress={handlePress}
-      >
-        {categories.map((categorie, key) => (
-          <ListItem
-            key={key}
-            // onPress={log}
-            bottomDivider
-          >
-            <Avatar
-              title={categorie.title}
-              // source={{ uri: l.avatar_url }}
+      <View style={styles.containerAmount}>
+        <Text style={styles.textAmount}>Valor de {type}:</Text>
+        <Text style={styles.amount}>${amount}</Text>
+      </View>
+
+      <View style={styles.mainContainer}>
+        {/* Reemplazar por desplegable de MAx */}
+        <View style={styles.detailContainer}>
+          <Text style={styles.title}>Categoría</Text>
+          <Button
+            title="Seleccionar categoría"
+            onPress={() => navigation.navigate("TransactionComplete")}
+          />
+        </View>
+
+        <View style={styles.detailContainer}>
+          <Text style={styles.title}>Detalle del ingreso</Text>
+          <InputCustom
+            placeholder="¿Cómo quieres indentificar tu ingreso?"
+            placeholderTextColor="#b9b5b6"
+            onChangeText={handleOnchangeDescription}
+          />
+        </View>
+        <View style={styles.detailContainer}>
+          <Text style={styles.title}>Fecha</Text>
+          <View style={styles.dateContainer}>
+            <ButtonCustom
+              containerStyle={styles.dateButton}
+              type={isSelectedToday ? "solid" : "outline"}
+              title="Hoy"
+              onPressFunction={handleOnchangeDateToday}
+              widthCustom={90}
             />
-            <ListItem.Content>
-              <ListItem.Title>{categorie.title}</ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-        ))}
-      </ListItem.Accordion>
+            <ButtonCustom
+              containerStyle={styles.dateButton}
+              type={isSelectedYesterday ? "solid" : "outline"}
+              title="Ayer"
+              onPress={handleOnchangeDateYesterday}
+              widthCustom={90}
+            />
+            <ButtonCustom
+              containerStyle={styles.dateButton}
+              type={isSelectedCustom ? "solid" : "outline"}
+              title="+"
+              onPress={handleOnchangeDateCustom}
+              widthCustom={90}
+            />
+          </View>
+        </View>
 
-      <Input placeholder="Detalle del ingreso" />
+        <View style={styles.detailContainer}>
+          <Text style={styles.title}>Cuenta</Text>
+          <ScrollView
+            style={styles.accountContainer}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          >
+            <ButtonGroup
+              buttons={accountsButtons}
+              buttonStyle={{
+                width: 100,
+                borderColor: Theme.colors.primary,
+                borderWidth: 1,
+                borderRadius: 30,
+                margin: 0,
+                padding: 0,
+              }}
+              buttonContainerStyle={{ marginRight: 10 }}
+              containerStyle={{
+                borderColor: "transparent",
+                backgroundColor: "transparent",
+                margin: 0,
+                padding: 0,
+              }}
+              innerBorderStyle={{ color: "transparent" }}
+              selectedButtonStyle={{ backgroundColor: Theme.colors.primary }}
+              selectedIndex={selectedIndex}
+              onPress={(selectedIdx) => handleOnchangeAccount(selectedIdx)}
+            />
+            {/* {accounts.map((account, key) => {
+              account.selected = false;
+              return (
+                <Button
+                  containerStyle={styles.dateButton}
+                  title={account.title}
+                  key={account.id}
+                  onPress={() => handleOnchangeAccount(key)}
+                  type={account.selected ? "solid" : "outline"}
+                />
+              );
+            })} */}
+          </ScrollView>
+        </View>
 
-      <Button
-        buttonStyle={{ width: 150 }}
-        containerStyle={{ margin: 5 }}
-        disabledStyle={{
-          borderWidth: 2,
-          borderColor: "#00F",
-        }}
-        disabledTitleStyle={{ color: "#00F" }}
-        linearGradientProps={null}
-        onPress={() => alert("click")}
-        title="Hoy"
-        titleProps={{}}
-        titleStyle={{ marginHorizontal: 5 }}
-      />
-
-      <Button
-        buttonStyle={{ width: 150 }}
-        containerStyle={{ margin: 5 }}
-        disabledStyle={{
-          borderWidth: 2,
-          borderColor: "#00F",
-        }}
-        disabledTitleStyle={{ color: "#00F" }}
-        linearGradientProps={null}
-        onPress={() => alert("click")}
-        title="Ayer"
-        titleProps={{}}
-        titleStyle={{ marginHorizontal: 5 }}
-      />
-
-      <Button
-        buttonStyle={{ width: 150 }}
-        containerStyle={{ margin: 5 }}
-        disabledStyle={{
-          borderWidth: 2,
-          borderColor: "#00F",
-        }}
-        disabledTitleStyle={{ color: "#00F" }}
-        linearGradientProps={null}
-        onPress={navigation.navigate("Calendar")}
-        title="+"
-        titleProps={{}}
-        titleStyle={{ marginHorizontal: 5 }}
-      />
-
-      {/* <CalendarCustom /> */}
-
-      <ButtonGroup
-        buttonStyle={{ width: 100 }}
-        buttonContainerStyle={{}}
-        // buttons={cuentas.map((cuenta) => {
-        //   cuenta.title;
-        // })}
-        buttons={["Banco", "Billetera", "Ahorros"]}
-      />
-
-      <Button
-        buttonStyle={{ width: 150 }}
-        containerStyle={{ margin: 5 }}
-        disabledStyle={{
-          borderWidth: 2,
-          borderColor: "#00F",
-        }}
-        disabledTitleStyle={{ color: "#00F" }}
-        linearGradientProps={null}
-        onPress={navigation.navigate("TransactionComplete")}
-        title="Listo"
-        titleProps={{}}
-        titleStyle={{ marginHorizontal: 5 }}
-      />
+        <View style={styles.detailContainer}>
+          <Button
+            title="Continuar"
+            onPress={() => navigation.navigate("TransactionComplete")}
+          />
+        </View>
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    padding: 40,
+  },
+  containerAmount: {
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 20,
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+  },
+  textAmount: {
+    fontSize: 18,
+  },
+  amount: {
+    fontSize: 50,
+    fontWeight: "bold",
+  },
+  detailContainer: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  dateContainer: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  dateButton: {
+    marginRight: 5,
+  },
+  accountContainer: {
+    flex: 1,
+    flexDirection: "row",
+    padding: -10,
+  },
+});
