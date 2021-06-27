@@ -152,14 +152,14 @@ export const TransactionDetail = ({
               containerStyle={styles.dateButton}
               type={isSelectedYesterday ? "solid" : "outline"}
               title="Ayer"
-              onPress={handleOnchangeDateYesterday}
+              onPressFunction={handleOnchangeDateYesterday}
               widthCustom={90}
             />
             <ButtonCustom
               containerStyle={styles.dateButton}
               type={isSelectedCustom ? "solid" : "outline"}
               title="+"
-              onPress={handleOnchangeDateCustom}
+              onPressFunction={handleOnchangeDateCustom}
               widthCustom={90}
             />
           </View>
@@ -209,10 +209,10 @@ export const TransactionDetail = ({
           </ScrollView>
         </View>
 
-        <View style={styles.detailContainer}>
-          <Button
+        <View style={(styles.detailContainer, styles.btnContinue)}>
+          <ButtonCustom
             title="Continuar"
-            onPress={() => navigation.navigate("TransactionComplete")}
+            onPressFunction={() => navigation.navigate("TransactionComplete")}
           />
         </View>
       </View>
@@ -261,5 +261,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     padding: -10,
+  },
+  btnContinue: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

@@ -5,7 +5,7 @@ import { Theme } from "../../Theme/Theme";
 export const ButtonCustom = ({
   navigation,
   title = "Continuar",
-  widthCustom,
+  widthCustom = 150,
   onPressFunction,
   type = "solid",
 }) => {
@@ -19,6 +19,9 @@ export const ButtonCustom = ({
         borderRadius: 30,
         paddingVertical: 10,
         backgroundColor: Theme.colors.primary,
+        borderColor: Theme.colors.primary,
+        justifyContent: "center",
+        alignItems: "center",
       }}
       type={type}
     />
