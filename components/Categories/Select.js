@@ -4,14 +4,14 @@ import { ListItem, Button } from "react-native-elements";
 import { categories } from "./CategoriesList";
 import { Theme } from "../../Theme/Theme";
 import { ScrollView } from "react-native-gesture-handler";
+import { ButtonCustom } from "../Custom/ButtonCustom";
 
 export const Select = ({ navigation }) => {
   const pressBtn = (route) => {
     navigation.navigate(route);
   };
 
-  const [expanded, setExpanded] = useState(false);
-
+  const [expanded, setExpanded] = useState(true);
 
   const handleSubmit = (route) => {
     navigation.navigate(route);
@@ -20,51 +20,57 @@ export const Select = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.goBackContainer}>
+        <ButtonCustom
+          title="<"
+          onPressFunction={() => navigation.goBack()}
+          widthCustom={45}
+        />
+      </View>
       <View style={styles.textContainer}>
         <Text style={{ fontSize: 19, fontWeight: "bold" }}>
           Seleccioná o creá una categoría
         </Text>
       </View>
 
-      
       <View>
-      <ListItem.Accordion
-        content={
-          <>
-            <ListItem.Content>
-              <ListItem.Title>Categorias</ListItem.Title>
-            </ListItem.Content>
-          </>
-        }
-        isExpanded={expanded}
-        // noRotation={true}
-        onPress={() => {
-          setExpanded(!expanded);
-        }}
-        containerStyle={{ width: 300 }}
-      >
-        <ScrollView style={{flex: 1, maxHeight: 200}}>
-          {categories.map((category, key) => (
-            <ListItem
-              key={key}
-              onPress={pressBtn}
-              bottomDivider
-              containerStyle={{ width: 300 }}
-            >
+        <ListItem.Accordion
+          content={
+            <>
               <ListItem.Content>
-                <ListItem.Title>{category.title}</ListItem.Title>
+                <ListItem.Title>Categorias</ListItem.Title>
               </ListItem.Content>
-            </ListItem>
-          ))}
-        </ScrollView>
-      </ListItem.Accordion>
+            </>
+          }
+          isExpanded={expanded}
+          // noRotation={true}
+          onPress={() => {
+            setExpanded(!expanded);
+          }}
+          containerStyle={{ width: 300 }}
+        >
+          <ScrollView style={{ flex: 1, maxHeight: 350 }}>
+            {categories.map((category, key) => (
+              <ListItem
+                key={key}
+                onPress={pressBtn}
+                bottomDivider
+                containerStyle={{ width: 300 }}
+              >
+                <ListItem.Content>
+                  <ListItem.Title>{category.title}</ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+            ))}
+          </ScrollView>
+        </ListItem.Accordion>
       </View>
 
       <Button
         title="+"
         buttonStyle={styles.button}
         onPress={handleSubmit}
-        titleStyle={{fontSize: 36, fontWeight: "bold"}}
+        titleStyle={{ fontSize: 36, fontWeight: "bold" }}
       ></Button>
     </View>
   );
@@ -90,5 +96,8 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginBottom: 20,
     alignItems: "center",
+  },
+  goBackContainer: {
+    // flex: 1,
   },
 });

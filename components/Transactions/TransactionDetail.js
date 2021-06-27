@@ -3,10 +3,12 @@ import { View, StyleSheet } from "react-native";
 import { InputCustom } from "../Custom/InputCustom";
 
 import { ButtonCustom } from "../Custom/ButtonCustom";
-import { Button, Text, ButtonGroup } from "react-native-elements";
+import { Button, Text, ButtonGroup, ListItem } from "react-native-elements";
 import { TransactionHeader } from "./TransactionHeader";
 import { ScrollView } from "react-native-gesture-handler";
 import { Theme } from "../../Theme/Theme";
+import { Select } from "../Categories/Select";
+import { categories } from "../Categories/CategoriesList";
 
 export const TransactionDetail = ({
   navigation,
@@ -107,9 +109,15 @@ export const TransactionDetail = ({
     setSelectedIndex(selectedIndex);
   };
 
+  const pressBtn = (route) => {
+    navigation.navigate(route);
+  };
+
   const accountsButtons = accounts.map((account) => {
     return account.title;
   });
+
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <View style={{ flex: 1 }}>
@@ -121,13 +129,60 @@ export const TransactionDetail = ({
       </View>
 
       <View style={styles.mainContainer}>
-        {/* Reemplazar por desplegable de MAx */}
         <View style={styles.detailContainer}>
-          <Text style={styles.title}>Categoría</Text>
-          <Button
-            title="Seleccionar categoría"
-            onPress={() => navigation.navigate("TransactionComplete")}
+          <ButtonCustom
+            containerStyle={styles.dateButton}
+            type={isSelectedToday ? "solid" : "outline"}
+            title="Categoria"
+            onPressFunction={() => navigation.navigate("SelectCategory")}
+            widthCustom={90}
           />
+
+          {/* <Select /> */}
+          {/* <Text style={styles.title}>Categoría</Text>
+
+          <ListItem.Accordion
+            content={
+              <>
+                <ListItem.Content>
+                  <ListItem.Title>
+                    Creá o seleccioná una categoria
+                  </ListItem.Title>
+                </ListItem.Content>
+              </>
+            }
+            isExpanded={expanded}
+            // noRotation={true}
+            onPress={() => {
+              setExpanded(!expanded);
+            }}
+            containerStyle={{ width: 300 }}
+          >
+            <ScrollView style={{ flex: 1 }}>
+              <ListItem
+                key="addCategory"
+                onPress={pressBtn}
+                bottomDivider
+                containerStyle={{ width: 300 }}
+              >
+                <ListItem.Content>
+                  <ListItem.Title>Agregar</ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+              {categories.map((category, key) => (
+                <ListItem
+                  key={key}
+                  onPress={pressBtn}
+                  bottomDivider
+                  containerStyle={{ width: 300 }}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>{category.title}</ListItem.Title>
+                  </ListItem.Content>
+                </ListItem>
+              ))}
+            </ScrollView>
+          </ListItem.Accordion> */}
         </View>
 
         <View style={styles.detailContainer}>
