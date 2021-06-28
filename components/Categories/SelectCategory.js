@@ -13,7 +13,7 @@ let ScreenHeight = Dimensions.get("window").height;
 export const SelectCategory = ({ navigation }) => {
   const [expanded, setExpanded] = useState(true);
 
-  const [cetegorySelected, setCetegorySelected] = useState(categories[0]);
+  const [categorySelected, setCategorySelected] = useState(categories[0]);
 
   const handleSubmit = (route) => {
     navigation.navigate(route);
@@ -21,13 +21,13 @@ export const SelectCategory = ({ navigation }) => {
   };
 
   const chooseCategory = (key) => {
-    setCetegorySelected(categories[key]);
+    setCategorySelected(categories[key]);
     // categories[key].color = Theme.colors.primary;
   };
 
   const goBackWithCategory = () => {
     navigation.navigate("TransactionDetail", {
-      title2: cetegorySelected.title,
+      title2: categorySelected.title,
     });
   };
 
@@ -51,7 +51,7 @@ export const SelectCategory = ({ navigation }) => {
         <View style={styles.textContainer}>
           {/* <Text style={{ fontSize: 25, fontWeight: "bold" }}>Categorías</Text> */}
           <Text style={{ fontSize: 19, fontWeight: "bold" }}>
-            Seleccionada: {cetegorySelected.title}
+            Seleccionada: {categorySelected.title}
           </Text>
         </View>
         <View>
