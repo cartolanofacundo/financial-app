@@ -7,16 +7,26 @@ import { InputCustom } from "../Custom/InputCustom";
 
 export const CreateAccount = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
+  
+  const [errorMessageMail, setErrorMessageMail] = useState("");
+  const [errorMessageName, setErrorMessageName] = useState("");
+  const [errorMessageLast, setErrorMessageLast] = useState("");
+  const [errorMessagePassword, setErrorMessagePassword] = useState("");
+  const [errorMessageRptPassword, setErrorMessageRptPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [name, setName] = useState("");
+  const [last, setLast] = useState("");
+  const [rptPassword, setRptPassword] = useState("")
 
   const handleSubmit = () => {
-    if (email === "" || password === "") {
-      setErrorMessage("El email es requerido");
+    if (name === "" || last === "" || email === "" || password === "" || password != rptPassword) {
+      setErrorMessage("Error al ingresar los datos");
     } else {
-      setErrorMessage("");
+      setErrorMessagePassword("");
       setButtonDisabled(false);
       setLoading(true);
     }
@@ -24,11 +34,49 @@ export const CreateAccount = ({ navigation }) => {
   const handleOnchangeMail = (e) => {
     setEmail(...(email + e));
     if (email === "") {
-      setErrorMessage("El email es requerido");
+      setErrorMessageMail("El email es requerido");
     } else {
-      setErrorMessage("");
+      setErrorMessageMail("");
     }
   };
+
+  const handleOnchangeName = (e) => {
+      setName(...(name + e));
+      if (name === "") {
+        setErrorMessageName("El nombre es requerido");
+      } else {
+        setErrorMessageName("");
+      }
+  };
+
+  const handleOnchangeLast = (e) => {
+    setLast(...(last + e));
+    if (last === "") {
+      setErrorMessageLast("El apellido es requerido");
+    } else {
+      setErrorMessageLast("");
+    }
+};
+
+const handleOnchangePassword = (e) => {
+  setPassword(...(password + e));
+  if (password === "") {
+    setErrorMessagePassword("La contraseña es requerida");
+  } else {
+    setErrorMessagePassword("");
+  }
+};
+
+const handleOnchangeRptPassword = (e) => {
+  setRptPassword(...(rptPassword + e));
+  if (rptPassword === "" || password != rptPassword) {
+    setErrorMessageRptPassword("Las contraseñas no coinciden");
+  } else {
+    setErrorMessageRptPassword("");
+  }
+};
+
+
   const navigateTo = (ruta) => {
     navigation.navigate(ruta);
   };
@@ -49,12 +97,12 @@ export const CreateAccount = ({ navigation }) => {
           placeholder="Nombre"
           renderErrorMessage={errorMessage}
           leftIcon={<Icon name="account" size={26} />}
-          onChangeText={handleOnchangeMail}
+          onChangeText={handleOnchangeName}
         ></InputCustom><InputCustom
         placeholder="Apellido"
         renderErrorMessage={errorMessage}
         leftIcon={<Icon name="account" size={26} />}
-        onChangeText={handleOnchangeMail}
+        onChangeText={handleOnchangeLast}
       ></InputCustom>
         <InputCustom
           placeholder="Email"
@@ -68,13 +116,14 @@ export const CreateAccount = ({ navigation }) => {
           renderErrorMessage={errorMessage}
           leftIcon={<Icon name="key" size={26} />}
           leftIconContainerStyle={styles.leftIcon}
+          onChangeText={handleOnchangePassword}
         ></InputCustom>
         <InputCustom
           placeholder="Repetir contraseña"
           secureTextEntry={true}
           renderErrorMessage={errorMessage}
           leftIcon={<Icon name="key" size={26} />}
-          onChangeText={handleOnchangeMail}
+          onChangeText={handleOnchangeRptPassword}
         ></InputCustom>
         <Button
           title="Crear cuenta"
