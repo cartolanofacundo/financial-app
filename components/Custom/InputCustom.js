@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Input } from 'react-native-elements';
 import { Theme } from '../../Theme/Theme';
 
-export const InputCustom = ({placeholder='', renderErrorMessage='', leftIcon, secureTextEntry=false, onChangeText: handleOnchange}) => {
+export const InputCustom = ({placeholder='', renderErrorMessage='', leftIcon, secureTextEntry=false, onChangeText: handleOnchange, customStyles= ""}) => {
     
   const [focus, setFocus] = useState(false)
 
@@ -15,7 +15,7 @@ export const InputCustom = ({placeholder='', renderErrorMessage='', leftIcon, se
         errorMessage={renderErrorMessage}
         leftIcon={leftIcon}
         leftIconContainerStyle={styles.leftIcon}
-        containerStyle={styles.formContainer}
+        containerStyle={styles.formContainer, customStyles}
         inputContainerStyle={
           focus ? styles.inputFocused : styles.inputContainer
         }
