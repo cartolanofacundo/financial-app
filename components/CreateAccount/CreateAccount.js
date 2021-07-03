@@ -4,133 +4,114 @@ import { Button, Image, Text } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Theme } from "../../Theme/Theme";
 import { InputCustom } from "../Custom/InputCustom";
+import * as Yup from "yup";
+import { Formik, useFormik } from "formik";
 
 export const CreateAccount = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  
-  const [errorMessageMail, setErrorMessageMail] = useState("");
-  const [errorMessageName, setErrorMessageName] = useState("");
-  const [errorMessageLast, setErrorMessageLast] = useState("");
-  const [errorMessagePassword, setErrorMessagePassword] = useState("");
-  const [errorMessageRptPassword, setErrorMessageRptPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [buttonDisabled, setButtonDisabled] = useState(true);
-  const [name, setName] = useState("");
-  const [last, setLast] = useState("");
-  const [rptPassword, setRptPassword] = useState("")
-
-  const handleSubmit = () => {
-    if (name === "" || last === "" || email === "" || password === "" || password != rptPassword) {
-      setErrorMessage("Error al ingresar los datos");
-    } else {
-      setErrorMessagePassword("");
-      setButtonDisabled(false);
-      setLoading(true);
-    }
-  };
-  const handleOnchangeMail = (e) => {
-    setEmail(...(email + e));
-    if (email === "") {
-      setErrorMessageMail("El email es requerido");
-    } else {
-      setErrorMessageMail("");
-    }
-  };
-
-  const handleOnchangeName = (e) => {
-      setName(...(name + e));
-      if (name === "") {
-        setErrorMessageName("El nombre es requerido");
-      } else {
-        setErrorMessageName("");
-      }
-  };
-
-  const handleOnchangeLast = (e) => {
-    setLast(...(last + e));
-    if (last === "") {
-      setErrorMessageLast("El apellido es requerido");
-    } else {
-      setErrorMessageLast("");
-    }
-};
-
-const handleOnchangePassword = (e) => {
-  setPassword(...(password + e));
-  if (password === "") {
-    setErrorMessagePassword("La contraseña es requerida");
-  } else {
-    setErrorMessagePassword("");
-  }
-};
-
-const handleOnchangeRptPassword = (e) => {
-  setRptPassword(...(rptPassword + e));
-  if (rptPassword === "" || password != rptPassword) {
-    setErrorMessageRptPassword("Las contraseñas no coinciden");
-  } else {
-    setErrorMessageRptPassword("");
-  }
-};
-
 
   const navigateTo = (ruta) => {
     navigation.navigate(ruta);
   };
 
+  const registerValidationSchema = Yup.object().shape({
+    name: Yup.string().required("El nombre es requerido"),
+    last: Yup.string().required("El apellido es requerido"),
+    email: Yup.string()
+      .email("El email no es válido")
+      .required("El mail es requerido"),
+    password: Yup.string()
+    .required("ingrese una contraseña")
+    // .min(8)
+    // .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
+    .matches(
+      /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+      "La contraseña debe tener 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial"
+    ),
+    repeatPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Las contraseñas deben coincidir'),
+  });
+
+  const { values, isSubmiting, setFieldValue, handleSubmit, errors } =
+    useFormik({
+      initialValues: {
+        name: "",
+        last: "",
+        email: "",
+        password: "",
+        repeatPassword: "",
+      },
+      onSubmit: (values) => {
+        console.log(JSON.stringify(errors) === '{}') //esta es la respuesta. Si no hay errores se puede hacer el submit
+      },
+      validationSchema: registerValidationSchema,
+      validateOnChange: true,
+    });
+
   return (
     <View style={styles.container}>
-
-        <View style={styles.welcomeTextContainer}>
+      <View style={styles.welcomeTextContainer}>
         <Text h4>¡Te damos la bienvenida!</Text>
 
         <Text>Registrate</Text>
+      </View>
 
-        </View>
-
-        
-
-        <InputCustom
-          placeholder="Nombre"
-          renderErrorMessage={errorMessage}
-          leftIcon={<Icon name="account" size={26} />}
-          onChangeText={handleOnchangeName}
-        ></InputCustom><InputCustom
-        placeholder="Apellido"
-        renderErrorMessage={errorMessage}
+      <InputCustom
+        type="name"
+        name="name"
+        placeholder="Nombre"
+        renderErrorMessage={errors.name}
         leftIcon={<Icon name="account" size={26} />}
-        onChangeText={handleOnchangeLast}
+        onChangeText={(text) => setFieldValue("name", text)}
+        value={values.name}
       ></InputCustom>
-        <InputCustom
-          placeholder="Email"
-          renderErrorMessage={errorMessage}
-          leftIcon={<Icon name="email" size={26} />}
-          onChangeText={handleOnchangeMail}
-        ></InputCustom>
-        <InputCustom
-          placeholder="Contraseña"
-          secureTextEntry={true}
-          renderErrorMessage={errorMessage}
-          leftIcon={<Icon name="key" size={26} />}
-          leftIconContainerStyle={styles.leftIcon}
-          onChangeText={handleOnchangePassword}
-        ></InputCustom>
-        <InputCustom
-          placeholder="Repetir contraseña"
-          secureTextEntry={true}
-          renderErrorMessage={errorMessage}
-          leftIcon={<Icon name="key" size={26} />}
-          onChangeText={handleOnchangeRptPassword}
-        ></InputCustom>
-        <Button
-          title="Crear cuenta"
-          buttonStyle={styles.button}
-          onPress={handleSubmit}
-          loading={loading}
-        ></Button>
+
+      <InputCustom
+        type="last"
+        name="last"
+        placeholder="Apellido"
+        renderErrorMessage={errors.last}
+        leftIcon={<Icon name="account" size={26} />}
+        onChangeText={(text) => setFieldValue("last", text)}
+        value={values.last}
+      ></InputCustom>
+      <InputCustom
+        type="email"
+        name="email"
+        placeholder="Email"
+        renderErrorMessage={errors.email}
+        leftIcon={<Icon name="email" size={26} />}
+        onChangeText={(text) => setFieldValue("email", text)}
+        value={values.email}
+      ></InputCustom>
+      <InputCustom
+        type="password"
+        name="password"
+        placeholder="Contraseña"
+        secureTextEntry={false}
+        renderErrorMessage={errors.password}
+        leftIcon={<Icon name="key" size={26} />}
+        leftIconContainerStyle={styles.leftIcon}
+        onChangeText={(text) => setFieldValue("password", text)}
+        value={values.password}
+      ></InputCustom>
+      <InputCustom
+        type="repeatPassword"
+        name="repeatPassword"
+        placeholder="Repetir contraseña"
+        secureTextEntry={false}
+        renderErrorMessage={errors.repeatPassword}
+        leftIcon={<Icon name="key" size={26} />}
+        onChangeText={(text) => setFieldValue("repeatPassword", text)}
+        value={values.repeatPassword}
+      ></InputCustom>
+
+      <Button
+        title="Crear cuenta"
+        buttonStyle={styles.button}
+        onPress={handleSubmit}
+        loading={loading}
+      ></Button>
     </View>
   );
 };
@@ -159,7 +140,6 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
     justifyContent: "space-between",
     marginTop: 25,
-
   },
   vinculoRegistrarse: {
     color: Theme.colors.primary,
@@ -179,5 +159,5 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginBottom: 20,
     alignItems: "center",
-  }
+  },
 });
