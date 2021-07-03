@@ -8,6 +8,7 @@ import { Theme } from "./Theme/Theme";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { TransactionsNavigator } from "./routes/TransactionsStack";
 import { RootNavigator } from "./routes/Root";
+import { AmountContext } from "./Contexts/AmountContext";
 
 export default function App() {
   const singedIn = true;
@@ -15,8 +16,10 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        {singedIn ? <RootNavigator /> : <LoginNavigator />}
-        {/* <TransactionsNavigator /> */}
+        <AmountContext.provider value={0}>
+          {singedIn ? <RootNavigator /> : <LoginNavigator />}
+          {/* <TransactionsNavigator /> */}
+        </AmountContext.provider>
       </NavigationContainer>
     </SafeAreaProvider>
   );

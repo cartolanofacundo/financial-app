@@ -1,19 +1,33 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { InputCustom } from "../Custom/InputCustom";
-import { Button } from "react-native-elements";
+import { Button, Icon } from "react-native-elements";
 import { TransactionHeader } from "./TransactionHeader";
 import { Theme } from "../../Theme/Theme";
+import { useContext } from "react";
+import { AmountContext } from "../../Contexts/AmountContext";
 
 export const TransactionHome = ({ navigation }) => {
   const title = "Egresos";
 
+  const amountContext = useContext(AmountContext);
+
+  const handleOnchange = (value) => {
+    console.log("hola");
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <TransactionHeader navigation={navigation} icon="close" />
-
+      <Text>{amountContext}</Text>
       <View style={styles.container}>
-        <InputCustom />
+        <InputCustom
+          // placeholder="Ingresar monto"
+          placeholder={amountContext}
+          placeholderTextColor="#b9b5b6"
+          leftIcon={<Icon name="dollar-sign" />}
+          onChangeText={handleOnchange}
+        />
         <Button
           title="continuar"
           onPress={() => navigation.navigate("TransactionDetail")}
