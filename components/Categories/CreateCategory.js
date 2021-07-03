@@ -30,7 +30,7 @@ export function CreateCategory({ navigation }) {
       //   EL BACK! tiene que agregar la nueva categoría
       categories1 = [...categories1, { title: newCategory, icon: newIcon }];
       navigation.goBack();
-      console.log(categories1);
+      // console.log(categories1);
     }
     console.log(errorMessage);
   };
