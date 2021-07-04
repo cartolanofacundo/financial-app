@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { InputCustom } from "../Custom/InputCustom";
 
 import { ButtonCustom } from "../Custom/ButtonCustom";
-import { Button, Text, ButtonGroup, ListItem } from "react-native-elements";
+import {
+  Button,
+  Text,
+  ButtonGroup,
+  ListItem,
+  Overlay,
+} from "react-native-elements";
 import { TransactionHeader } from "./TransactionHeader";
 import { ScrollView } from "react-native-gesture-handler";
 import { Theme } from "../../Theme/Theme";
+import CalendarPicker from "react-native-calendar-picker";
 
 const accounts = [
   {
@@ -71,13 +78,7 @@ export const TransactionDetail = ({
   type = "ingreso",
   amount = "200",
 }) => {
-  let title2 = "";
-
-  if (route.params !== undefined) {
-    title2 = route.params.title2;
-  } else {
-    title2 = "Sin seleccionar";
-  }
+  let title2 = "Sin seleccionar";
 
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
@@ -87,6 +88,17 @@ export const TransactionDetail = ({
   const [isSelectedCustom, setIsSelectedCustom] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [canContinue, setCanContinue] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [dateCustomTitle, setDateCustomTitle] = useState("Fecha");
+  const [startDate, setStartDate] = useState("");
+
+  if (route.params !== undefined) {
+    title2 = route.params?.title2;
+  }
+  const toggleCalendar = () => {
+    setShowCalendar(!showCalendar);
+    // setDateCustomTitle();
+  };
 
   const handleOnchangeDescription = (value) => {
     setDescription(value);
@@ -121,6 +133,23 @@ export const TransactionDetail = ({
     return account.title;
   });
 
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+
+  const onDateChange = (date) => {
+    setSelectedStartDate(date);
+  };
+
+  const toggleDateModal = () => {
+    if (selectedStartDate !== null) {
+      // setStartDate(selectedStartDate.toString());
+
+      setStartDate(selectedStartDate.toString());
+    }
+    setShowCalendar(false);
+    setDateCustomTitle(startDate);
+    console.log("TOGGLE MODAL", startDate);
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <TransactionHeader navigation={navigation} icon="arrow-left" />
@@ -145,11 +174,13 @@ export const TransactionDetail = ({
         <View style={styles.detailContainer}>
           <Text style={styles.title}>Detalle del ingreso</Text>
           <InputCustom
-            placeholder="¿Cómo quieres indentificar tu ingreso?"
-            placeholderTextColor="#b9b5b6"
+            // inputContainerStyle={styles.detailText}
+            customStyles={{ width: 300, marginLeft: -10 }}
+            placeholder="Ingresar detalle"
             onChangeText={handleOnchangeDescription}
           />
         </View>
+
         <View style={styles.detailContainer}>
           <Text style={styles.title}>Fecha</Text>
           <View style={styles.dateContainer}>
@@ -170,8 +201,8 @@ export const TransactionDetail = ({
             <ButtonCustom
               containerStyle={styles.dateButton}
               type={isSelectedCustom ? "solid" : "outline"}
-              title="+"
-              onPressFunction={handleOnchangeDateCustom}
+              title={dateCustomTitle}
+              onPressFunction={toggleCalendar}
               widthCustom={90}
             />
           </View>
@@ -232,6 +263,20 @@ export const TransactionDetail = ({
             }}
           />
         </View>
+
+        <Overlay isVisible={showCalendar} toggleCalendar={toggleCalendar}>
+          <View style={styles.calendarContainer}>
+            <CalendarPicker onDateChange={onDateChange} />
+
+            <Text>SELECTED DATE:{startDate}</Text>
+
+            <ButtonCustom
+              title="Seleccionar"
+              onPressFunction={toggleDateModal}
+            />
+          </View>
+          {/* <Calendar style={styles.calendarContainer} /> */}
+        </Overlay>
       </View>
     </View>
   );
@@ -246,29 +291,31 @@ const styles = StyleSheet.create({
     padding: 40,
   },
   containerAmount: {
-    backgroundColor: "#fff",
+    backgroundColor: Theme.colors.primary,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 20,
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
   },
   textAmount: {
     fontSize: 18,
+    color: "white",
   },
   amount: {
     fontSize: 50,
     fontWeight: "bold",
+    color: "white",
   },
   detailContainer: {
-    flex: 1,
+    height: 90,
   },
   title: {
-    fontSize: 20,
-    marginBottom: 10,
+    fontSize: 15,
+    // marginBottom: 5,
   },
   dateContainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: "row",
   },
   dateButton: {
@@ -283,5 +330,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  calendarContainer: {
+    width: 200,
   },
 });

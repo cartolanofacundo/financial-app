@@ -5,12 +5,12 @@ import { Button, Icon } from "react-native-elements";
 import { TransactionHeader } from "./TransactionHeader";
 import { Theme } from "../../Theme/Theme";
 import { useContext } from "react";
-import { AmountContext } from "../../Contexts/AmountContext";
+// import { AmountContext } from "../../Contexts/AmountContext";
 
 export const TransactionHome = ({ navigation }) => {
   const title = "Egresos";
 
-  const amountContext = useContext(AmountContext);
+  // const amountContext = useContext(AmountContext);
 
   const handleOnchange = (value) => {
     console.log("hola");
@@ -19,13 +19,13 @@ export const TransactionHome = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <TransactionHeader navigation={navigation} icon="close" />
-      <Text>{amountContext}</Text>
+      {/* <Text>{amountContext}</Text> */}
       <View style={styles.container}>
         <InputCustom
-          // placeholder="Ingresar monto"
-          placeholder={amountContext}
+          placeholder="Ingresar monto"
+          // placeholder={amountContext}
           placeholderTextColor="#b9b5b6"
-          leftIcon={<Icon name="dollar-sign" />}
+          // leftIcon={<Icon name="dollar-sign" />}
           onChangeText={handleOnchange}
         />
         <Button
@@ -46,6 +46,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     alignItems: "center",
     justifyContent: "center",
+    // backgroundColor: Theme.colors.primary,
+    // borderBottomLeftRadius: 30,
+    // borderBottomRightRadius: 30,
   },
   button: {
     width: 200,

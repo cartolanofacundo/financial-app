@@ -18,18 +18,18 @@ export const TransactionHeader = ({
       centerComponent={{
         text: title,
         style: {
-          color: Theme.colors.primary,
+          color: "white",
           fontSize: 25,
           fontWeight: "bold",
         },
       }}
       containerStyle={{
-        backgroundColor: "white",
+        backgroundColor: Theme.colors.primary,
         alignItems: "center",
       }}
       leftComponent={{
         icon: icon,
-        color: Theme.colors.primary,
+        color: "white",
         fontWeight: "bold",
         size: 25,
         // onPress: () => navigation.goBack(),
