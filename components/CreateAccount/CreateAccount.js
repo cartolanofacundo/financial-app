@@ -6,9 +6,17 @@ import { Theme } from "../../Theme/Theme";
 import { InputCustom } from "../Custom/InputCustom";
 import * as Yup from "yup";
 import { Formik, useFormik } from "formik";
+import { Success } from "./Success"
 
 export const CreateAccount = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
+
+
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const toggleModal = () => {
+    setShowSuccess(!showSuccess)
+  } 
 
   const navigateTo = (ruta) => {
     navigation.navigate(ruta);
@@ -68,7 +76,7 @@ export const CreateAccount = ({ navigation }) => {
           requestOptions
         )
           .then((response) => response.text())
-          .then(navigation.goBack())
+          .then(toggleModal())
           .catch((error) => console.log("error", error));
       },
       validationSchema: registerValidationSchema,
@@ -139,6 +147,9 @@ export const CreateAccount = ({ navigation }) => {
         onPress={handleSubmit}
         loading={loading}
       ></Button>
+
+      <Success show= {showSuccess} navigation={navigation} setShow={toggleModal}></Success>
+
     </View>
   );
 };
