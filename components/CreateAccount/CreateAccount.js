@@ -21,15 +21,17 @@ export const CreateAccount = ({ navigation }) => {
       .email("El email no es válido")
       .required("El mail es requerido"),
     password: Yup.string()
-    .required("ingrese una contraseña")
-    // .min(8)
-    // .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
-    .matches(
-      /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-      "La contraseña debe tener 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial"
+      .required("ingrese una contraseña")
+      // .min(8)
+      // .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
+      .matches(
+        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+        "La contraseña debe tener 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial"
+      ),
+    repeatPassword: Yup.string().oneOf(
+      [Yup.ref("password"), null],
+      "Las contraseñas deben coincidir"
     ),
-    repeatPassword: Yup.string()
-    .oneOf([Yup.ref('password'), null], 'Las contraseñas deben coincidir'),
   });
 
   const { values, isSubmiting, setFieldValue, handleSubmit, errors } =
@@ -42,7 +44,32 @@ export const CreateAccount = ({ navigation }) => {
         repeatPassword: "",
       },
       onSubmit: (values) => {
-        console.log(JSON.stringify(errors) === '{}') //esta es la respuesta. Si no hay errores se puede hacer el submit
+        console.log(JSON.stringify(errors) === "{}"); //esta es la respuesta. Si no hay errores se puede hacer el submit
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        let raw = JSON.stringify({
+          first: values.name,
+          last: values.last,
+          email: values.email,
+          password: values.password,
+          repeat_password: values.repeatPassword,
+        });
+
+        let requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        fetch(
+          "https://morning-meadow-12976.herokuapp.com/api/users/",
+          requestOptions
+        )
+          .then((response) => response.text())
+          .then(navigation.goBack())
+          .catch((error) => console.log("error", error));
       },
       validationSchema: registerValidationSchema,
       validateOnChange: true,
