@@ -88,7 +88,7 @@ export const CreateAccount = ({ navigation }) => {
         type="password"
         name="password"
         placeholder="Contraseña"
-        secureTextEntry={false}
+        secureTextEntry={true}
         renderErrorMessage={errors.password}
         leftIcon={<Icon name="key" size={26} />}
         leftIconContainerStyle={styles.leftIcon}
@@ -99,7 +99,7 @@ export const CreateAccount = ({ navigation }) => {
         type="repeatPassword"
         name="repeatPassword"
         placeholder="Repetir contraseña"
-        secureTextEntry={false}
+        secureTextEntry={true}
         renderErrorMessage={errors.repeatPassword}
         leftIcon={<Icon name="key" size={26} />}
         onChangeText={(text) => setFieldValue("repeatPassword", text)}
