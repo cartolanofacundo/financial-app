@@ -4,71 +4,120 @@ import { Button, Image, Text } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Theme } from "../../Theme/Theme";
 import { InputCustom } from "../Custom/InputCustom";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+
 
 export const Login = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [showError, setShowError] = useState(false);
+  const [resultadoNuestro, setResultadoNuestro] = useState("");
 
-  const handleSubmit = () => {
-    if (email === "" || password === "") {
-      setErrorMessage("El email es requerido");
+  const handleResponse = (error) => {
+    if (error === "Credenciales no validas") {
+      setResultadoNuestro(error);
+      setShowError(true);
+      setLoading(false);
     } else {
-      setErrorMessage("");
-      setButtonDisabled(false);
-      setLoading(true);
+      setShowError(false);
+      setLoading(false);
     }
   };
-  const handleOnchangeMail = (e) => {
-    setEmail(...(email + e));
-    if (email === "") {
-      setErrorMessage("El email es requerido");
-    } else {
-      setErrorMessage("");
-    }
-  };
+
+  const loginValidationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("El email no es válido")
+      .required("El mail es requerido"),
+    password: Yup.string()
+      .required("ingrese una contraseña")
+      .matches(
+        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+        "La contraseña es inválida"
+      ),
+  });
+
+  const { values, isSubmiting, setFieldValue, handleSubmit, errors } =
+    useFormik({
+      initialValues: {
+        email: "",
+        password: "",
+      },
+      onSubmit: (values) => {
+        setLoading(true)
+        //console.log(JSON.stringify(errors) === "{}"); //esta es la respuesta. Si no hay errores se puede hacer el submit
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        let raw = JSON.stringify({
+          email: values.email,
+          password: values.password,
+        });
+
+        let requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        fetch(
+          "https://morning-meadow-12976.herokuapp.com/api/users/login",
+          requestOptions
+        )
+          .then((response) => response.text())
+          //.then((result) => console.log(result)) el result solo vive hasta la primera llamada
+          .then((result) => handleResponse(result))
+          .catch((error) => console.log("error", error));
+      },
+      validationSchema: loginValidationSchema,
+      validateOnChange: true,
+    });
+
   const navigateTo = (ruta) => {
     navigation.navigate(ruta);
   };
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={require("../../assets/Imagenes/background.png")} style={styles.background}>
+      <ImageBackground
+        source={require("../../assets/Imagenes/background.png")}
+        style={styles.background}
+      >
         <Image
           source={require("../../assets/Imagenes/finance.png")}
           style={{ width: 150, height: 150 }}
         />
 
         <View style={styles.welcomeTextContainer}>
-        <Text h4>¡Te damos la bienvenida!</Text>
+          <Text h4>¡Te damos la bienvenida!</Text>
 
-        <Text>Logueate para continuar</Text>
-
+          <Text>Logueate para continuar</Text>
         </View>
 
-        
-
-        
         <InputCustom
+          type="email"
+          name="email"
           placeholder="Email"
-          renderErrorMessage={errorMessage}
+          renderErrorMessage={errors.email}
           leftIcon={<Icon name="email" size={26} />}
-          onChangeText={handleOnchangeMail}
+          onChangeText={(text) => setFieldValue("email", text)}
         ></InputCustom>
         <InputCustom
+          type="password"
+          name="password"
           placeholder="Contraseña"
           secureTextEntry={true}
-          renderErrorMessage={errorMessage}
+          renderErrorMessage={errors.password}
           leftIcon={<Icon name="key" size={26} />}
           leftIconContainerStyle={styles.leftIcon}
+          onChangeText={(text) => setFieldValue("password", text)}
         ></InputCustom>
+        {showError == true ? <Text style={{color: "red"}}>{resultadoNuestro}</Text> : null}
         <Button
           title="Ingresar"
           buttonStyle={styles.button}
-          onPress={handleSubmit}
           loading={loading}
+          onPress={handleSubmit}
         ></Button>
 
         <View style={styles.registration}>
@@ -108,7 +157,6 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
     justifyContent: "space-between",
     marginTop: 25,
-
   },
   vinculoRegistrarse: {
     color: Theme.colors.primary,
@@ -128,5 +176,5 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginBottom: 20,
     alignItems: "center",
-  }
+  },
 });
