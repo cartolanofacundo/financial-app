@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
 import { Button, Image, Text } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -7,33 +7,46 @@ import { InputCustom } from "../Custom/InputCustom";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import jwt_decode from "jwt-decode";
+import { UserContext } from "../Context/UserContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Login = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
-  const [resultadoNuestro, setResultadoNuestro] = useState("");
+  const [errorMessageServer, setErrorMessageServer] = useState("");
 
-  const handleResponse = (error) => {
-    if (error === "Credenciales no validas") {
-      setResultadoNuestro(error);
+  const {setToken, setUser } = useContext(UserContext);
+
+  const saveToken = async (token) => {
+    try {
+      const jsonValue = JSON.stringify(token);
+      await AsyncStorage.setItem("@storage_Key", jsonValue);
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  const handleResponse = (response) => {
+    if (response === "Credenciales no validas") {
+      setErrorMessageServer(response);
       setShowError(true);
       setLoading(false);
     } else {
       setShowError(false);
       setLoading(false);
-      console.log(error);
-      let token = error.token + "SSSS";
-      console.log(token);
+      setToken(response.token);
+      saveToken(response.token);
+      setUser(response.user);
 
-      let decoded = jwt_decode(token, { complete: true });
-      console.log(true);
-      if (typeof decoded === "object") {
-        console.log("Hubo un error");
-      } else {
-        console.log("Somos Yisus");
-      }
+      //   let decoded = jwt_decode(token, { complete: true });
+      //   console.log(token.complete);
+      //   if (typeof decoded === "object") {
+      //     console.log("Hubo un error");
+      //   } else {
+      //     console.log("Somos Yisus");
+      //   }
 
-      console.log(decoded);
+      //   console.log(decoded);
     }
   };
 

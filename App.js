@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { HomeNavigator } from "./routes/HomeStack";
@@ -9,18 +9,26 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { TransactionsNavigator } from "./routes/TransactionsStack";
 import { RootNavigator } from "./routes/Root";
 import { AboutUsNavigator } from "./routes/AboutUsStack";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {UserContext} from './Components/Context/UserContext'
+
 
 export default function App() {
-  const singedIn = false;
+
+  const [token, setToken] = useState(null);
+  const [user, setUser] = useState({});
+
+
 
   return (
-    <SafeAreaProvider>
+    
+    <UserContext.Provider value={{user, setUser, token, setToken}}>
       <NavigationContainer>
-        {/* {singedIn ? <RootNavigator /> : <LoginNavigator />} */}
+        {(token !== null) ? <RootNavigator /> : <LoginNavigator/>}
         {/* <TransactionsNavigator /> */}
-        <AboutUsNavigator/>
+        {/* <AboutUsNavigator/> */}
       </NavigationContainer>
-    </SafeAreaProvider>
+    </UserContext.Provider>
   );
 }
 
