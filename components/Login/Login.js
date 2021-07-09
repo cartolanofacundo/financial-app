@@ -6,7 +6,7 @@ import { Theme } from "../../Theme/Theme";
 import { InputCustom } from "../Custom/InputCustom";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
+import jwt_decode from "jwt-decode";
 
 export const Login = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -21,6 +21,19 @@ export const Login = ({ navigation }) => {
     } else {
       setShowError(false);
       setLoading(false);
+      console.log(error);
+      let token = error.token + "SSSS";
+      console.log(token);
+
+      let decoded = jwt_decode(token, { complete: true });
+      console.log(true);
+      if (typeof decoded === "object") {
+        console.log("Hubo un error");
+      } else {
+        console.log("Somos Yisus");
+      }
+
+      console.log(decoded);
     }
   };
 
@@ -43,7 +56,7 @@ export const Login = ({ navigation }) => {
         password: "",
       },
       onSubmit: (values) => {
-        setLoading(true)
+        setLoading(true);
         //console.log(JSON.stringify(errors) === "{}"); //esta es la respuesta. Si no hay errores se puede hacer el submit
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -64,9 +77,8 @@ export const Login = ({ navigation }) => {
           "https://morning-meadow-12976.herokuapp.com/api/users/login",
           requestOptions
         )
-          .then((response) => response.text())
-          //.then((result) => console.log(result)) el result solo vive hasta la primera llamada
-          .then((result) => handleResponse(result))
+          .then((response) => response.json())
+          .then((user) => handleResponse(user))
           .catch((error) => console.log("error", error));
       },
       validationSchema: loginValidationSchema,
@@ -112,7 +124,9 @@ export const Login = ({ navigation }) => {
           leftIconContainerStyle={styles.leftIcon}
           onChangeText={(text) => setFieldValue("password", text)}
         ></InputCustom>
-        {showError == true ? <Text style={{color: "red"}}>{resultadoNuestro}</Text> : null}
+        {showError == true ? (
+          <Text style={{ color: "red" }}>{resultadoNuestro}</Text>
+        ) : null}
         <Button
           title="Ingresar"
           buttonStyle={styles.button}
