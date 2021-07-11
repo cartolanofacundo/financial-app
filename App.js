@@ -9,6 +9,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { TransactionsNavigator } from "./routes/TransactionsStack";
 import { RootNavigator } from "./routes/Root";
 import { AboutUsNavigator } from "./routes/AboutUsStack";
+import { TransactionHistory } from "./Components/Transactions/TransactionHistory";
+import { Login } from "./Components/Login/Login";
 
 export default function App() {
   const singedIn = false;
@@ -18,7 +20,8 @@ export default function App() {
       <NavigationContainer>
         {/* {singedIn ? <RootNavigator /> : <LoginNavigator />} */}
         {/* <TransactionsNavigator /> */}
-        <AboutUsNavigator/>
+        <TransactionHistory />
+        {/* <Login /> */}
       </NavigationContainer>
     </SafeAreaProvider>
   );
