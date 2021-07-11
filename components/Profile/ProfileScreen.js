@@ -26,7 +26,8 @@ export const ProfileScreen = ({ navigation }) => {
     );
   }, []);
 
-  let usuarioAux = JSON.parse(JSON.stringify(user));
+  // let usuarioAux = JSON.parse(JSON.stringify(user));
+  let usuarioAux = {};
 
   // const tokenAux = getToken();
 
