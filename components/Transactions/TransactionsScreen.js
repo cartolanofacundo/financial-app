@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native";
 import { Button, View, StyleSheet } from "react-native";
 import { Text } from "react-native-elements";
 
-export const TransactionHistory = ({ navigation }) => {
+export const TransactionsScreen = ({ navigation }) => {
   const buttons = ["Todos", "Ingresos", "Egresos"];
   const [transactions, setTransactions] = useState([]);
   const [categories, setCategories] = useState({});

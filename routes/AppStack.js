@@ -6,9 +6,9 @@ import { HomeScreen } from "../Components/Home/HomeScreen";
 import { ProfileScreen } from "../Components/Profile/ProfileScreen";
 import { AboutUsScreen } from "../Components/AboutUs/AboutUsScreen";
 import { TransactionsScreen } from "../Components/Transactions/TransactionsScreen";
-import { NewTransactionScreen } from "../Components/NewTransaction/NewTransactionScreen";
 import { Theme } from "../Theme/Theme";
 import { TouchableOpacity } from "react-native";
+import { NewTransactionScreen } from "../Components/NewTransaction/OverlayButtons/NewTransactionScreen";
 
 const Tab = createBottomTabNavigator();
 

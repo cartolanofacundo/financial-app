@@ -8,15 +8,23 @@ import * as Yup from "yup";
 import { Formik, useFormik } from "formik";
 import { AuthContext } from "../Context/AuthContext";
 
-export const User = ({ navigation }) => {
-  const { logedin, validarToken, setLogedin, user, setUser, getToken, token, setToken } =
-    useContext(AuthContext);
+export const ProfileScreen = ({ navigation }) => {
+  const {
+    logedin,
+    validarToken,
+    setLogedin,
+    user,
+    setUser,
+    getToken,
+    token,
+    setToken,
+  } = useContext(AuthContext);
 
   useEffect(() => {
-    setToken ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjZjJiNTI4OTRkOTAwMTVlMjllMmIiLCJpYXQiOjE2MjU5NDAzNzB9.Tn0_eZyLCJakBs-NfN_BHSXxwoSjumlBKeEz1o4Bves") 
-    
-  }, [])
-
+    setToken(
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjZjJiNTI4OTRkOTAwMTVlMjllMmIiLCJpYXQiOjE2MjU5NDAzNzB9.Tn0_eZyLCJakBs-NfN_BHSXxwoSjumlBKeEz1o4Bves"
+    );
+  }, []);
 
   let usuarioAux = JSON.parse(JSON.stringify(user));
 
@@ -53,9 +61,7 @@ export const User = ({ navigation }) => {
         console.log(JSON.stringify(errors) === "{}"); //esta es la respuesta. Si no hay errores se puede hacer el submit
 
         let myHeaders = new Headers();
-        myHeaders.append(
-          "Authorization",
-          "Bearer " + token);
+        myHeaders.append("Authorization", "Bearer " + token);
         myHeaders.append("Content-Type", "application/json");
 
         let raw = JSON.stringify({
@@ -64,7 +70,7 @@ export const User = ({ navigation }) => {
           email: values.email,
           password: values.password,
           repeat_password: values.repeatPassword,
-          id: values.id
+          id: values.id,
         });
 
         let requestOptions = {
@@ -99,7 +105,6 @@ export const User = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-
       <View style={styles.logout}>
         <Button
           title="X Logout"
@@ -111,7 +116,7 @@ export const User = ({ navigation }) => {
       <View style={styles.welcomeTextContainer}>
         <Text h4>Modificá tus datos</Text>
       </View>
-     
+
       <InputCustom
         type="name"
         name="name"
