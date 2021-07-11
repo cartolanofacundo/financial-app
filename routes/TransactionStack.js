@@ -1,10 +1,10 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { AccountsScreen } from "../Components/NewTransaction/Accounts/AccountsScreen";
-import { CategoriesScreen } from "../Components/NewTransaction/Categories/CategoriesScreen";
-import { DetailsScreen } from "../Components/NewTransaction/Details/DetailsScreen";
-import { CalculatorScreen } from "../Components/NewTransaction/Calculator/CalculatorScreen";
-import { NewTransactionScreen } from "../Components/NewTransaction/OverlayButtons/NewTransactionScreen";
+import { AccountsScreen } from "../components/NewTransaction/Accounts/AccountsScreen";
+import { CategoriesScreen } from "../components/NewTransaction/Categories/CategoriesScreen";
+import { DetailsScreen } from "../components/NewTransaction/Details/DetailsScreen";
+import { CalculatorScreen } from "../components/NewTransaction/Calculator/CalculatorScreen";
+import { NewTransactionScreen } from "../components/NewTransaction/OverlayButtons/NewTransactionScreen";
 
 const Stack = createStackNavigator();
 

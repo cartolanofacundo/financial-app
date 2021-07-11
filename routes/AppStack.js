@@ -2,13 +2,13 @@ import * as React from "react";
 import { Text, View } from "react-native";
 import { Icon } from "react-native-elements";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { HomeScreen } from "../Components/Home/HomeScreen";
-import { ProfileScreen } from "../Components/Profile/ProfileScreen";
-import { AboutUsScreen } from "../Components/AboutUs/AboutUsScreen";
-import { TransactionsScreen } from "../Components/Transactions/TransactionsScreen";
+import { HomeScreen } from "../components/Home/HomeScreen";
+import { ProfileScreen } from "../components/Profile/ProfileScreen";
+import { AboutUsScreen } from "../components/AboutUs/AboutUsScreen";
+import { TransactionsScreen } from "../components/Transactions/TransactionsScreen";
 import { Theme } from "../Theme/Theme";
 import { TouchableOpacity } from "react-native";
-import { NewTransactionScreen } from "../Components/NewTransaction/OverlayButtons/NewTransactionScreen";
+import { NewTransactionScreen } from "../components/NewTransaction/OverlayButtons/NewTransactionScreen";
 
 const Tab = createBottomTabNavigator();
 
