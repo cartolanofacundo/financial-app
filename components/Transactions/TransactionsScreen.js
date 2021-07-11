@@ -91,7 +91,7 @@ export const TransactionsScreen = ({ navigation }) => {
           }}
         >
           <View>
-            <Text>{Moment(item.date).format("d MMMM")}</Text>
+            <Text>{Moment(item.date).format("D MMMM")}</Text>
           </View>
 
           <View
