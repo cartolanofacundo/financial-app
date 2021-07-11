@@ -9,18 +9,19 @@ import { useFormik } from "formik";
 import jwt_decode from "jwt-decode";
 import { UserContext } from "../Context/UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "../Context/AuthContext";
 
 export const Login = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessageServer, setErrorMessageServer] = useState("");
 
-  const {setToken, setUser } = useContext(UserContext);
-
+  //const {setToken, setUser } = useContext(UserContext);
+  const {setLogedin, validarToken, user, setUser } = useContext(AuthContext);
   const saveToken = async (token) => {
     try {
       const jsonValue = JSON.stringify(token);
-      await AsyncStorage.setItem("@storage_Key", jsonValue);
+      await AsyncStorage.setItem("token", jsonValue);
     } catch (e) {
       // saving error
     }
@@ -34,8 +35,9 @@ export const Login = ({ navigation }) => {
     } else {
       setShowError(false);
       setLoading(false);
-      setToken(response.token);
+      //setToken(response.token);
       saveToken(response.token);
+      validarToken();
       setUser(response.user);
 
       //   let decoded = jwt_decode(token, { complete: true });
