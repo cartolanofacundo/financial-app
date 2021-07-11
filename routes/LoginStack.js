@@ -1,17 +1,20 @@
-import React from 'react';
+import * as React from 'react';
+import { View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import {Login} from '../Components/Login/Login';
-import {CreateAccount} from '../Components/CreateAccount/CreateAccount';
+import { LoginScreen } from '../Components/Login/LoginScreen'
+import { CreateAccountScreen } from '../Components/CreateAccount/CreateAccountScreen'
 
-const LoginStack = createStackNavigator();
+const Stack = createStackNavigator();
 
-export const LoginNavigator = ({setToken}) => {
-  
-  return (
-    <LoginStack.Navigator initialRouteName="Login" headerMode="none">
-      <LoginStack.Screen name="Login" component={Login} setToken= {setToken}/>
-      <LoginStack.Screen name="Registrarse" component={CreateAccount} />
-    </LoginStack.Navigator>
-  );
-};
+export const LoginStack = () => {
+    return (
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Log In">
+                <Stack.Screen name="Log In" component={LoginScreen} />
+                <Stack.Screen name="Registrarse" component={CreateAccountScreen} />
+            </Stack.Navigator>
+        </NavigationContainer>
+    )
 
+}
