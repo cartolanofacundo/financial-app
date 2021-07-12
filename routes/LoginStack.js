@@ -1,20 +1,16 @@
-import * as React from 'react';
-import { View, Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen } from '../Components/Login/LoginScreen'
-import { CreateAccountScreen } from '../Components/CreateAccount/CreateAccountScreen'
+import { CreateAccountScreen } from '../components/CreateAccount/CreateAccountScreen'
+import { LoginScreen } from '../components/Login/LoginScreen';
 
 const Stack = createStackNavigator();
 
 export const LoginStack = () => {
     return (
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName="Log In">
-                <Stack.Screen name="Log In" component={LoginScreen} />
-                <Stack.Screen name="Registrarse" component={CreateAccountScreen} />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <Stack.Navigator initialRouteName="Log In" headerMode="none">
+            <Stack.Screen name="Log In" component={LoginScreen} />
+            <Stack.Screen name="Registrarse" component={CreateAccountScreen} />
+        </Stack.Navigator>
     )
 
 }

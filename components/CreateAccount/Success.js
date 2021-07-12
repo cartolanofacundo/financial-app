@@ -10,10 +10,12 @@ export const Success = ({ navigation, show, toggleModal }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(true);
-
+  const [navegando, setNavegando] = useState(false)
   const handleSubmit = () => {
-    navigateTo("Login")
-    toggleModal
+    setNavegando(true)
+    console.log(navegando)
+    navigateTo("Log In")
+
   };
   
   const navigateTo = (ruta) => {
@@ -21,7 +23,7 @@ export const Success = ({ navigation, show, toggleModal }) => {
   };
 
   return (
-    <Overlay style={styles.container} isVisible={show} fullScreen= {true}>
+    <Overlay style={styles.container} isVisible={(navegando) ? false : show} fullScreen= {true}>
       <ImageBackground source={require("../../assets/Imagenes/background.png")} style={styles.background}>
         <Image
           source={require("../../assets/Imagenes/finance.png")}

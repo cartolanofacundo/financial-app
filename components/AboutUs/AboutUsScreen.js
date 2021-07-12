@@ -8,6 +8,7 @@ export const AboutUsScreen = () => {
     navigation.navigate("Home");
   };
 
+
   return (
     <View style={styles.container}>
       <Image

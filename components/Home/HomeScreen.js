@@ -10,8 +10,6 @@ export const HomeScreen = ({ navigation }) => {
     let anioActual = new Date().getFullYear();
     const totalHeight = Dimensions.get('window').height
     const categoriesHeight = (Dimensions.get('screen').height < 800) ? 220 : 280
-    console.log("alto scroll", categoriesHeight)
-    console.log("alto display", Dimensions.get('screen').height)
     return (
         <View style={styles.screenContainer}>
             <View style={styles.headerContainer}>

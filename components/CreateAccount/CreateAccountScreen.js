@@ -1,18 +1,38 @@
-import React, { useState } from "react";
-import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
-import { Button, Image, Text } from "react-native-elements";
+import React, { useContext, useState, useEffect} from "react";
+import { View, StyleSheet, Alert} from "react-native";
+import { Button, Text } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Theme } from "../../Theme/Theme";
 import { InputCustom } from "../Custom/InputCustom";
 import * as Yup from "yup";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import { Success } from "./Success"
+import { AuthContext } from "../Context/AuthContext";
 
-export const CreateAccount = ({ navigation }) => {
+export const CreateAccountScreen = ({ navigation }) => {
+  const {registrarse, successMessage, errorMessageSignUp, removeErrorSignUp} = useContext(AuthContext)
   const [loading, setLoading] = useState(false);
 
-
   const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    if(successMessage.length === 0){
+      return
+    }
+    setShowSuccess(true)
+  }, [successMessage])
+
+  useEffect(() => {
+    if(errorMessageSignUp.length === 0){
+      return
+    }
+
+    Alert.alert('Registro Incorrecto', errorMessageSignUp, [{
+      text: "Ok",
+      onPress: removeErrorSignUp
+    }])
+    setLoading(false);
+  }, [errorMessageSignUp])
 
   const toggleModal = () => {
     setShowSuccess(!showSuccess)
@@ -23,20 +43,18 @@ export const CreateAccount = ({ navigation }) => {
   };
 
   const registerValidationSchema = Yup.object().shape({
-    name: Yup.string().required("El nombre es requerido"),
+    first: Yup.string().required("El nombre es requerido"),
     last: Yup.string().required("El apellido es requerido"),
     email: Yup.string()
       .email("El email no es válido")
       .required("El mail es requerido"),
     password: Yup.string()
       .required("ingrese una contraseña")
-      // .min(8)
-      // .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
       .matches(
         /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
         "La contraseña debe tener 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial"
       ),
-    repeatPassword: Yup.string().oneOf(
+    repeat_password: Yup.string().oneOf(
       [Yup.ref("password"), null],
       "Las contraseñas deben coincidir"
     ),
@@ -45,39 +63,14 @@ export const CreateAccount = ({ navigation }) => {
   const { values, isSubmiting, setFieldValue, handleSubmit, errors } =
     useFormik({
       initialValues: {
-        name: "",
+        first: "",
         last: "",
         email: "",
         password: "",
-        repeatPassword: "",
+        repeat_password: "",
       },
-      onSubmit: (values) => {
-        console.log(JSON.stringify(errors) === "{}"); //esta es la respuesta. Si no hay errores se puede hacer el submit
-        let myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        let raw = JSON.stringify({
-          first: values.name,
-          last: values.last,
-          email: values.email,
-          password: values.password,
-          repeat_password: values.repeatPassword,
-        });
-
-        let requestOptions = {
-          method: "POST",
-          headers: myHeaders,
-          body: raw,
-          redirect: "follow",
-        };
-
-        fetch(
-          "https://morning-meadow-12976.herokuapp.com/api/users/",
-          requestOptions
-        )
-          .then((response) => response.text())
-          .then(toggleModal())
-          .catch((error) => console.log("error", error));
+      onSubmit: ({first, last, email, password, repeat_password}) => {
+        registrarse({first, last, email, password, repeat_password})
       },
       validationSchema: registerValidationSchema,
       validateOnChange: true,
@@ -92,13 +85,13 @@ export const CreateAccount = ({ navigation }) => {
       </View>
 
       <InputCustom
-        type="name"
-        name="name"
+        type="first"
+        name="first"
         placeholder="Nombre"
-        renderErrorMessage={errors.name}
+        renderErrorMessage={errors.first}
         leftIcon={<Icon name="account" size={26} />}
-        onChangeText={(text) => setFieldValue("name", text)}
-        value={values.name}
+        onChangeText={(text) => setFieldValue("first", text)}
+        value={values.first}
       ></InputCustom>
 
       <InputCustom
@@ -131,14 +124,14 @@ export const CreateAccount = ({ navigation }) => {
         value={values.password}
       ></InputCustom>
       <InputCustom
-        type="repeatPassword"
-        name="repeatPassword"
+        type="repeat_password"
+        name="repeat_password"
         placeholder="Repetir contraseña"
         secureTextEntry={true}
-        renderErrorMessage={errors.repeatPassword}
+        renderErrorMessage={errors.repeat_password}
         leftIcon={<Icon name="key" size={26} />}
-        onChangeText={(text) => setFieldValue("repeatPassword", text)}
-        value={values.repeatPassword}
+        onChangeText={(text) => setFieldValue("repeat_password", text)}
+        value={values.repeat_password}
       ></InputCustom>
 
       <Button

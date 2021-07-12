@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native";
 import { Button, View, StyleSheet } from "react-native";
@@ -7,11 +7,6 @@ import { Text } from "react-native-elements";
 
 export const TransactionHistory = ({ navigation }) => {
   //   const [transactions, setTransactions] = useState([]);
-
-  useEffect(() => {
-    // getTransactions();
-    getCategories();
-  }, []);
 
   //   const transactions = getTransactions();
 

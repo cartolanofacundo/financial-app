@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, {useContext} from "react";
 import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
 import { Button, Image, Text } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -9,23 +9,8 @@ import { Formik, useFormik } from "formik";
 import { AuthContext } from "../Context/AuthContext";
 
 export const ProfileScreen = ({ navigation }) => {
-  const {
-    logedin,
-    validarToken,
-    setLogedin,
-    user,
-    setUser,
-    getToken,
-    token,
-    setToken,
-  } = useContext(AuthContext);
 
-  useEffect(() => {
-    setToken(
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjZjJiNTI4OTRkOTAwMTVlMjllMmIiLCJpYXQiOjE2MjU5NDAzNzB9.Tn0_eZyLCJakBs-NfN_BHSXxwoSjumlBKeEz1o4Bves"
-    );
-  }, []);
-
+  const { logOut } = useContext(AuthContext)
   // let usuarioAux = JSON.parse(JSON.stringify(user));
   let usuarioAux = {};
 
@@ -62,7 +47,7 @@ export const ProfileScreen = ({ navigation }) => {
         console.log(JSON.stringify(errors) === "{}"); //esta es la respuesta. Si no hay errores se puede hacer el submit
 
         let myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + token);
+        // myHeaders.append("Authorization", "Bearer " + token);
         myHeaders.append("Content-Type", "application/json");
 
         let raw = JSON.stringify({
@@ -93,16 +78,6 @@ export const ProfileScreen = ({ navigation }) => {
       validateOnChange: true,
     });
 
-  const clearAll = async () => {
-    try {
-      await AsyncStorage.clear();
-      validarToken();
-    } catch (e) {
-      // clear error
-    }
-
-    console.log("Done.");
-  };
 
   return (
     <View style={styles.container}>
@@ -110,7 +85,7 @@ export const ProfileScreen = ({ navigation }) => {
         <Button
           title="X Logout"
           buttonStyle={styles.LogoutButton}
-          onPress={clearAll}
+          onPress={logOut}
         ></Button>
       </View>
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native";
 import { Button, View, StyleSheet } from "react-native";
@@ -9,16 +9,6 @@ export const TransactionsScreen = ({ navigation }) => {
   const [transactions, setTransactions] = useState([]);
   const [categories, setCategories] = useState({});
 
-  useEffect(() => {
-    fetchTransactions();
-    fetchCategories().then((data) => {
-      setCategories((prev) => {
-        prev = data;
-        return prev;
-      });
-      console.log("CAT ARR", categories);
-    });
-  }, []);
 
   const fetchTransactions = async () => {
     var myHeaders = new Headers();

@@ -1,55 +1,38 @@
-import React, { useState, useContext } from "react";
-import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
+import React, { useState, useContext, useEffect} from "react";
+import { View, StyleSheet, ImageBackground } from "react-native";
 import { Button, Image, Text } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Theme } from "../../Theme/Theme";
 import { InputCustom } from "../Custom/InputCustom";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import jwt_decode from "jwt-decode";
-import { UserContext } from "../Context/UserContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../Context/AuthContext";
+import { Alert } from "react-native";
 
-export const Login = ({ navigation }) => {
+export const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const [errorMessageServer, setErrorMessageServer] = useState("");
 
-  //const {setToken, setUser } = useContext(UserContext);
-  const {setLogedin, validarToken, user, setUser } = useContext(AuthContext);
-  const saveToken = async (token) => {
-    try {
-      const jsonValue = JSON.stringify(token);
-      await AsyncStorage.setItem("token", jsonValue);
-    } catch (e) {
-      // saving error
+  const { logIn, errorMessage, removeError } = useContext(AuthContext);
+
+
+  useEffect(() => {
+    if(errorMessage.length === 0){
+      return
     }
-  };
 
-  const handleResponse = (response) => {
-    if (response === "Credenciales no validas") {
-      setErrorMessageServer(response);
-      setShowError(true);
-      setLoading(false);
-    } else {
-      setShowError(false);
-      setLoading(false);
-      //setToken(response.token);
-      saveToken(response.token);
-      validarToken();
-      setUser(response.user);
+    Alert.alert('Login Incorrecto', errorMessage, [{
+      text: "Ok",
+      onPress: removeError
+    }])
+    setLoading(false);
+  }, [errorMessage])
 
-      //   let decoded = jwt_decode(token, { complete: true });
-      //   console.log(token.complete);
-      //   if (typeof decoded === "object") {
-      //     console.log("Hubo un error");
-      //   } else {
-      //     console.log("Somos Yisus");
-      //   }
-
-      //   console.log(decoded);
-    }
+  useEffect(() => {
+    setLoading(false);
+  }, [])
+  
+  const handleResponse = (email, password) => {
+    logIn({ email, password })
   };
 
   const loginValidationSchema = Yup.object().shape({
@@ -70,39 +53,14 @@ export const Login = ({ navigation }) => {
         email: "",
         password: "",
       },
-      onSubmit: (values) => {
+      onSubmit: ({ email, password }) => {
         setLoading(true);
-        //console.log(JSON.stringify(errors) === "{}"); //esta es la respuesta. Si no hay errores se puede hacer el submit
-        let myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        let raw = JSON.stringify({
-          email: values.email,
-          password: values.password,
-        });
-
-        let requestOptions = {
-          method: "POST",
-          headers: myHeaders,
-          body: raw,
-          redirect: "follow",
-        };
-
-        fetch(
-          "https://morning-meadow-12976.herokuapp.com/api/users/login",
-          requestOptions
-        )
-          .then((response) => response.json())
-          .then((user) => handleResponse(user))
-          .catch((error) => console.log("error", error));
+        handleResponse(email, password)
+        logIn({ email, password })
       },
       validationSchema: loginValidationSchema,
       validateOnChange: true,
     });
-
-  const navigateTo = (ruta) => {
-    navigation.navigate(ruta);
-  };
 
   return (
     <View style={styles.container}>
@@ -139,9 +97,6 @@ export const Login = ({ navigation }) => {
           leftIconContainerStyle={styles.leftIcon}
           onChangeText={(text) => setFieldValue("password", text)}
         ></InputCustom>
-        {showError == true ? (
-          <Text style={{ color: "red" }}>{resultadoNuestro}</Text>
-        ) : null}
         <Button
           title="Ingresar"
           buttonStyle={styles.button}
@@ -152,7 +107,7 @@ export const Login = ({ navigation }) => {
         <View style={styles.registration}>
           <Text style={styles.hasNotAccount}>¿No tenés cuenta?</Text>
           <Text
-            onPress={() => navigateTo("Registrarse")}
+            onPress={() => navigation.navigate("Registrarse")}
             style={styles.vinculoRegistrarse}
           >
             Registrarse
@@ -162,6 +117,7 @@ export const Login = ({ navigation }) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -192,14 +148,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   background: {
-    // flex: 1,
     resizeMode: "cover",
-    // justifyContent: "center",
     paddingHorizontal: 20,
     paddingTop: 40,
     alignItems: "center",
-    // height: Dimensions.get('window').height,
-    // width: Dimensions.get('window').width,
   },
   welcomeTextContainer: {
     marginTop: 50,
