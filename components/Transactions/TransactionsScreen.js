@@ -270,10 +270,10 @@ const styles = StyleSheet.create({
     display: "none",
   },
   red: {
-    color: "red",
+    color: "#f44236",
   },
   green: {
-    color: "green",
+    color: "#4cb050",
   },
   header: {
     minHeight: Dimensions.get("window").height * 0.25,
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   buttonIngreso: {
-    backgroundColor: "green",
+    backgroundColor: "#4cb050",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 5,
@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   buttonEgreso: {
-    backgroundColor: "red",
+    backgroundColor: "#f44236",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 5,
