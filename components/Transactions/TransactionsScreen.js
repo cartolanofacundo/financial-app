@@ -32,6 +32,9 @@ export const TransactionsScreen = ({ navigation }) => {
   const [selectedDateId, setSelectedDateId] = useState("todas");
   const [showIncome, setShowIncome] = useState(true);
   const [showOutcome, setShowOutcome] = useState(true);
+  const [buttonSelectedStyle, setButtonSelectedStyle] = useState(
+    styles.buttonTodas
+  );
 
   useEffect(() => {
     setTransactions([...sampleTransactions]);
@@ -143,16 +146,19 @@ export const TransactionsScreen = ({ navigation }) => {
       case "egreso":
         setShowIncome(false);
         setShowOutcome(true);
+        setButtonSelectedStyle(styles.buttonEgresos);
         break;
 
       case "ingreso":
         setShowIncome(true);
         setShowOutcome(false);
+        setButtonSelectedStyle(styles.buttonIngresos);
         break;
 
       case "todas":
         setShowIncome(true);
         setShowOutcome(true);
+        setButtonSelectedStyle(styles.buttonTodas);
         break;
 
       default:
@@ -162,12 +168,33 @@ export const TransactionsScreen = ({ navigation }) => {
   };
 
   const renderButtons = ({ item }) => {
+    const selectButtonStyle = (key) => {
+      switch (key) {
+        case "egreso":
+          return styles.buttonEgreso;
+          break;
+
+        case "ingreso":
+          return styles.buttonIngreso;
+
+          break;
+
+        case "todas":
+          return styles.buttonTodas;
+
+          break;
+
+        default:
+          return styles.buttonTodas;
+      }
+    };
+
+    let estiloBtn = selectButtonStyle(item.key);
+
     return (
       <TouchableOpacity
         style={
-          item.key === selectedDateId
-            ? styles.dateButtonsPicked
-            : styles.dateButtonsDisabled
+          item.key === selectedDateId ? estiloBtn : styles.dateButtonsDisabled
         }
         onPress={() => handleSelectButon(item.key)}
       >
@@ -275,7 +302,29 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginLeft: 10,
   },
-  dateButtonsPicked: {
+  buttonIngreso: {
+    backgroundColor: "green",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    width: 65,
+    height: 30,
+    borderRadius: 20,
+    marginLeft: 10,
+  },
+  buttonEgreso: {
+    backgroundColor: "red",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    width: 65,
+    height: 30,
+    borderRadius: 20,
+    marginLeft: 10,
+  },
+  buttonTodas: {
     backgroundColor: Theme.colors.primary,
     justifyContent: "center",
     alignItems: "center",
