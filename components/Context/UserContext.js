@@ -173,7 +173,7 @@ export const UserProvider = ({ children }) => {
     const addTransaction = async ({ type, category, description, amount, account, date }) => {
         const body = { type, category, description, amount, account, date }
         const data = await postFetch("transactions", body)
-        console.log(data)
+        console.log(data);
         if (data === "No se ha podido agregar la transaccion") {
             dispatch({
                 type: types.addErrorFetch,
@@ -238,8 +238,10 @@ export const UserProvider = ({ children }) => {
             };
             try {
                 const { data } = await financeApi.post(`/${route}/${user._id}`, body, config);
+                console.log(da)
                 return data;
             } catch (error) {
+                console.log(error);
                 dispatch({
                     type: types.addErrorFetch,
                     payload: {

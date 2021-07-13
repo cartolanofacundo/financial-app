@@ -23,8 +23,8 @@ const dateButtonsInitial = [
 
 
 export const DetailsScreen = ({ navigation }) => {
-    const { type, amount, category, account, addDescription, addDate, submitTransaction } = useContext(TransactionContext)
-    const { categories, accounts } = useContext(UserContext)
+    const { type, amount, category, account, addDescription, addDate, submitTransaction, date, description } = useContext(TransactionContext)
+    const { categories, accounts, addTransaction } = useContext(UserContext)
 
 
     let styles = (type == "ingreso") ? IncomeStyles : OutcomeStyles
@@ -54,7 +54,8 @@ export const DetailsScreen = ({ navigation }) => {
         }
         if(descriptionInterno != "" && category && account){
             addDescription(descriptionInterno)
-            submitTransaction();
+            console.log(type, amount, category._id, account._id, date, description, type)
+            addTransaction({type, amount, category, account, date, description, type})
             navigation.pop();
         }else{
             return
