@@ -3,24 +3,51 @@ import { View, StyleSheet, Dimensions } from "react-native";
 import { Text, Icon } from "react-native-elements";
 import { Theme } from "../../Theme/Theme"
 import { ScrollView } from "react-native";
-import { AuthContext } from "../Context/AuthContext";
 import { UserContext } from "../Context/UserContext";
+import { FlatList } from "react-native";
+
+
+const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+let mesActual = new Date().getMonth();
+let anioActual = new Date().getFullYear();
+const totalHeight = Dimensions.get('window').height
+const categoriesHeight = (Dimensions.get('screen').height < 800) ? 220 : 280
 
 export const HomeScreen = ({ navigation }) => {
-    const {categories, balance, accounts, transactions, transfers, getCategories, addTransaction} = useContext(UserContext)
-    //borrar
-    // const type = "egreso"
-    // const category = "60dceeec2894d90015e29e18"
-    // const description = "testeando desde la app"
-    // const amount = 2000
-    // const account = "60dceeec2894d90015e29e1a"
-    // const date = new Date()
-    //borrar
-    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
-    let mesActual = new Date().getMonth();
-    let anioActual = new Date().getFullYear();
-    const totalHeight = Dimensions.get('window').height
-    const categoriesHeight = (Dimensions.get('screen').height < 800) ? 220 : 280
+    const { categories, balance, accounts, transactions, transfers, getCategories, addTransaction } = useContext(UserContext)
+
+    const renderAccountsCard = ({ item }) => {
+        return (
+            <View style={styles.cardContainer}>
+                <View style={{ marginBottom: 10 }}>
+                    <Text style={{ fontSize: 14, color: "rgba(0,0,0,0.7)" }}>{item.title}</Text>
+                </View>
+                <View>
+                    <Text style={{ fontSize: 20, fontWeight: "bold", color: "black" }}>$ {item.balance}</Text>
+                </View>
+
+            </View>
+        )
+    }
+    const renderCategories = ({ item }) => {
+        if (item.type === "egreso") {
+            return (
+                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginVertical: 10 }}>
+                    <View style={{ flexDirection: "row" }}>
+                        <Icon type="material" name="person" size={40} color="white" containerStyle={{ backgroundColor: "rgb(232,76,136)", borderRadius: 50, padding: 5 }} />
+                        <View style={{ flexDirection: "column", marginLeft: 10, padding: 5 }}>
+                            <Text style={{ fontSize: 15, fontWeight: "bold" }}>{item.title}</Text>
+                            <Text style={{ color: "rgba(0,0,0,0.5)", marginTop: 2, fontSize: 12 }}>Gasto de {item.title} del mes de {meses[mesActual]}</Text>
+
+                        </View>
+                    </View>
+                    {(item.total[anioActual]) ?
+                        <Text style={{ fontSize: 18 }}>$ {(item.total[anioActual][mesActual]) ? item.total[anioActual][mesActual] : 0}</Text>
+                        : <Text style={{ fontSize: 18 }}>$0</Text>}
+                </View>
+            )
+        }
+    }
 
     return (
         <View style={styles.screenContainer}>
@@ -34,90 +61,36 @@ export const HomeScreen = ({ navigation }) => {
                         <Text style={{ color: "white", fontSize: 16 }}> hoy</Text>
                     </View>
                     <View style={{ marginBottom: 40 }}>
-                        <Text style={{ fontSize: 30, marginTop: 20, color: "white", fontWeight: "bold" }}>$ 25800</Text>
+                        <Text style={{ fontSize: 30, marginTop: 20, color: "white", fontWeight: "bold" }}>{balance}</Text>
                         <Text style={{ color: "white" }}>En el total de las cuentas</Text>
                     </View>
                 </View>
             </View>
-            <ScrollView style={{ marginTop: -30, paddingHorizontal: 20, maxHeight: 130 }} horizontal={true} showsHorizontalScrollIndicator={false}>
-                <View style={styles.cardContainer}></View>
-                <View style={styles.cardContainer}></View>
-                <View style={styles.cardContainer}></View>
-                <View style={styles.cardContainer}></View>
-            </ScrollView>
+            <View style={{ marginTop: -30, maxHeight: 130 }}>
+                <FlatList
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    data={accounts}
+                    renderItem={renderAccountsCard}
+                    keyExtractor={(item) => item._id}
+                    extraData={accounts}
+                    contentContainerStyle={{ paddingHorizontal: 20 }}
+                />
+            </View>
+
             <View style={{ paddingHorizontal: 20, marginTop: 20 }} >
                 <View style={{ flexDirection: "row", marginBottom: 30 }}>
                     <Text style={{ fontSize: 20, fontWeight: "bold" }}>Gastos de </Text>
-                    <Text style={{ fontSize: 20, fontWeight: "bold", color: Theme.colors.primary }}>Junio</Text>
+                    <Text style={{ fontSize: 20, fontWeight: "bold", color: Theme.colors.primary }}>{meses[mesActual]}</Text>
                 </View>
-                <ScrollView style={{ paddingHorizontal: 5, maxHeight: categoriesHeight }} showsVerticalScrollIndicator={false}>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginVertical: 10 }}>
-                        <View style={{ flexDirection: "row" }}>
-                            <Icon type="material" name="person" size={40} color="white" containerStyle={{ backgroundColor: "rgb(232,76,136)", borderRadius: 50, padding: 5 }} />
-                            <View style={{ flexDirection: "column", marginLeft: 10, padding: 5 }}>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Deportes</Text>
-                                <Text style={{ color: "rgba(0,0,0,0.5)", marginTop: 2 }}>Total gastado en junio</Text>
-                            </View>
-                        </View>
-                        <Text style={{ fontSize: 18 }}>$200</Text>
-                    </View>
-
-
-                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginVertical: 10 }}>
-                        <View style={{ flexDirection: "row" }}>
-                            <Icon type="material" name="person" size={40} color="white" containerStyle={{ backgroundColor: "rgb(232,76,136)", borderRadius: 50, padding: 5 }} />
-                            <View style={{ flexDirection: "column", marginLeft: 10, padding: 5 }}>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Deportes</Text>
-                                <Text style={{ color: "rgba(0,0,0,0.5)", marginTop: 2 }}>Total gastado en junio</Text>
-                            </View>
-                        </View>
-                        <Text style={{ fontSize: 18 }}>$200</Text>
-                    </View>
-
-                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginVertical: 10 }}>
-                        <View style={{ flexDirection: "row" }}>
-                            <Icon type="material" name="person" size={40} color="white" containerStyle={{ backgroundColor: "rgb(232,76,136)", borderRadius: 50, padding: 5 }} />
-                            <View style={{ flexDirection: "column", marginLeft: 10, padding: 5 }}>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Deportes</Text>
-                                <Text style={{ color: "rgba(0,0,0,0.5)", marginTop: 2 }}>Total gastado en junio</Text>
-                            </View>
-                        </View>
-                        <Text style={{ fontSize: 18 }}>$200</Text>
-                    </View>
-
-                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginVertical: 10 }}>
-                        <View style={{ flexDirection: "row" }}>
-                            <Icon type="material" name="person" size={40} color="white" containerStyle={{ backgroundColor: "rgb(232,76,136)", borderRadius: 50, padding: 5 }} />
-                            <View style={{ flexDirection: "column", marginLeft: 10, padding: 5 }}>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Deportes</Text>
-                                <Text style={{ color: "rgba(0,0,0,0.5)", marginTop: 2 }}>Total gastado en junio</Text>
-                            </View>
-                        </View>
-                        <Text style={{ fontSize: 18 }}>$200</Text>
-                    </View>
-
-                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginVertical: 10 }}>
-                        <View style={{ flexDirection: "row" }}>
-                            <Icon type="material" name="person" size={40} color="white" containerStyle={{ backgroundColor: "rgb(232,76,136)", borderRadius: 50, padding: 5 }} />
-                            <View style={{ flexDirection: "column", marginLeft: 10, padding: 5 }}>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Deportes</Text>
-                                <Text style={{ color: "rgba(0,0,0,0.5)", marginTop: 2 }}>Total gastado en junio</Text>
-                            </View>
-                        </View>
-                        <Text style={{ fontSize: 18 }}>$200</Text>
-                    </View>
-
-                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginVertical: 10 }}>
-                        <View style={{ flexDirection: "row" }}>
-                            <Icon type="material" name="person" size={40} color="white" containerStyle={{ backgroundColor: "rgb(232,76,136)", borderRadius: 50, padding: 5 }} />
-                            <View style={{ flexDirection: "column", marginLeft: 10, padding: 5 }}>
-                                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Deportes</Text>
-                                <Text style={{ color: "rgba(0,0,0,0.5)", marginTop: 2 }}>Total gastado en junio</Text>
-                            </View>
-                        </View>
-                        <Text style={{ fontSize: 18 }}>$200</Text>
-                    </View>
-                </ScrollView>
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={categories}
+                    renderItem={renderCategories}
+                    keyExtractor={(item) => item._id}
+                    extraData={categories}
+                    contentContainerStyle={{ paddingHorizontal: 5, maxHeight: categoriesHeight }}
+                />
             </View>
         </View>
     );
@@ -156,10 +129,12 @@ const styles = StyleSheet.create({
     cardContainer: {
         height: 100,
         width: 200,
-        borderRadius: 30,
+        borderRadius: 15,
         margin: 5,
         backgroundColor: "rgb(255,255,255)",
         elevation: 5,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
     }
 });
 

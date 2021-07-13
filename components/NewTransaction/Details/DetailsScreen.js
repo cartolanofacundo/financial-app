@@ -22,12 +22,14 @@ const dateButtonsInitial = [
 
 export const DetailsScreen = ({ navigation }) => {
     const {type, amount} = useContext(TransactionContext)
+
     const styles = ((type === "ingreso") ? IncomeStyles : OutcomeStyles)
     const [dateButtons, setDateButtons] = useState([...dateButtonsInitial])
     const [selectedDateId, setSelectedDateId] = useState("today")
     const [showDatePicker, setShowDatePicker] = useState(false)
     const [date, setDate] = useState(new Date())
     const [description, setDescription] = useState("")
+
     const handleCancel = () => {
         navigation.popToTop()
         resetValues()
@@ -35,7 +37,6 @@ export const DetailsScreen = ({ navigation }) => {
 
     const resetValues = () => {
         handleSetDateButtons()
-        setDescription("");
     }
     const handleSetDateButtons = (date = null) => {
         if (date == null) {
