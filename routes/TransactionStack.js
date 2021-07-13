@@ -16,6 +16,7 @@ const TransactionState = ({ children }) => {
   )
 
 }
+
 export const TransactionStack = () => {
   return (
     <TransactionState>
@@ -25,28 +26,6 @@ export const TransactionStack = () => {
         headerMode="none"
         screenOptions={{ animationEnabled: false }}
       >
-        <Stack.Screen
-          name="buttons"
-          component={NewTransactionScreen}
-          options={{
-            animationEnabled: true,
-            cardStyle: {
-              backgroundColor: "rgba(0,0,0,0.15)",
-            },
-            cardOverlayEnabled: true,
-            cardStyleInterpolator: ({ current: { progress } }) => {
-              return {
-                cardStyle: {
-                  backgroundColor: "transparent",
-                  // opacity: progress.interpolate({
-                  //   inputRange: [0, 0.5, 0.9, 1],
-                  //   outputRange: [0, 0.25, 0.7, 1]
-                  // })
-                },
-              };
-            },
-          }}
-        />
         <Stack.Screen name="Transaction detail" component={DetailsScreen} />
         <Stack.Screen
           name="Accounts"
@@ -95,6 +74,28 @@ export const TransactionStack = () => {
         <Stack.Screen
           name="Calculator"
           component={CalculatorScreen}
+          options={{
+            animationEnabled: true,
+            cardStyle: {
+              backgroundColor: "rgba(0,0,0,0.15)",
+            },
+            cardOverlayEnabled: true,
+            cardStyleInterpolator: ({ current: { progress } }) => {
+              return {
+                cardStyle: {
+                  backgroundColor: "transparent",
+                  // opacity: progress.interpolate({
+                  //   inputRange: [0, 0.5, 0.9, 1],
+                  //   outputRange: [0, 0.25, 0.7, 1]
+                  // })
+                },
+              };
+            },
+          }}
+        />
+        <Stack.Screen
+          name="buttons"
+          component={NewTransactionScreen}
           options={{
             animationEnabled: true,
             cardStyle: {

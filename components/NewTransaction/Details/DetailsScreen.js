@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, View, Text, Dimensions, FlatList, TextInp
 import { Icon, Divider, Button } from "react-native-elements"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TransactionContext } from "../../Context/TransactionContext";
+import { UserContext } from "../../Context/UserContext";
 
 const dateButtonsInitial = [
     {
@@ -21,25 +22,91 @@ const dateButtonsInitial = [
 
 
 export const DetailsScreen = ({ navigation }) => {
-    const {type, amount} = useContext(TransactionContext)
-
-    const styles = ((type === "ingreso") ? IncomeStyles : OutcomeStyles)
+    const {type, amount, addType, category, account, description, errorMessageTransaction, date, addDate } = useContext(TransactionContext)
+    const {categories, accounts} = useContext(UserContext)
+    let styles = (type == "ingreso") ? IncomeStyles : OutcomeStyles
     const [dateButtons, setDateButtons] = useState([...dateButtonsInitial])
     const [selectedDateId, setSelectedDateId] = useState("today")
     const [showDatePicker, setShowDatePicker] = useState(false)
-    const [date, setDate] = useState(new Date())
-    const [description, setDescription] = useState("")
+    const [dateInterno, setDateInterno] = useState(new Date())
+    const [descriptionInterno, setDescriptionInterno] = useState("")
+    const [categoriesInterno, setCategoriesInterno] = useState({})
+    const [accountsInterno, setAccountsInterno] = useState({})
+
 
     const handleCancel = () => {
         navigation.popToTop()
         resetValues()
     }
 
+    useEffect(() => {
+        let categoriesObject = {}
+        if(categories.length > 0){
+            categories.map((item) =>{
+                if(item.type === type){
+                    categoriesObject[item._id] = {
+                        title: item.title,
+                        icon: item.icon.name
+                    }
+                }
+            })
+            setCategoriesInterno(categoriesObject);
+        }
+        //console.log(categoriesObject)
+      let accountsObject = {}
+      if(accounts.lenght > 0){
+        accounts.map((item) =>{
+            if(item.type === type){
+                accountsObject[item._id] = {
+                    title: item.title,
+                    icon: item.icon
+                }
+            }
+        })
+        setAccountsInterno(accountsObject);
+        
+    }
+    console.log("categoria interna", categoriesInterno[category])
+    }, [])
+    useEffect(() => {
+        
+        console.log(category, "categoria en details")
+    }, [category])
+    useEffect(() => {
+        let categoriesObject = {}
+        if(categories.length > 0){
+            categories.map((item) =>{
+                if(item.type === type){
+                    categoriesObject[item._id] = {
+                        title: item.title,
+                        icon: item.icon.name
+                    }
+                }
+            })
+            setCategoriesInterno(categoriesObject);
+        }
+        //console.log(categoriesObject)
+      let accountsObject = {}
+      if(accounts.lenght > 0){
+        accounts.map((item) =>{
+            if(item.type === type){
+                accountsObject[item._id] = {
+                    title: item.title,
+                    icon: item.icon
+                }
+            }
+        })
+        setAccountsInterno(accountsObject);
+        
+    }
+    console.log("categoria interna", categoriesInterno[category])
+    }, [categories, accounts])
+
     const resetValues = () => {
         handleSetDateButtons()
     }
-    const handleSetDateButtons = (date = null) => {
-        if (date == null) {
+    const handleSetDateButtons = (dateFunction = null) => {
+        if (dateFunction == null) {
             setDateButtons([...dateButtonsInitial])
         } else {
             setDateButtons((prev) => {
@@ -47,22 +114,23 @@ export const DetailsScreen = ({ navigation }) => {
                     prev.pop()
                 }
                 prev.push({
-                    title: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
-                    key: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
+                    title: `${dateFunction.getDate()}/${dateFunction.getMonth() + 1}/${dateFunction.getFullYear()}`,
+                    key: `${dateFunction.getDate()}/${dateFunction.getMonth() + 1}/${dateFunction.getFullYear()}`,
                 })
                 return prev
             })
+            addDate(dateFunction)
         }
 
     }
     const handleOnChangeDatePicker = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
+        const currentDate = selectedDate || dateInterno;
         console.log("currentDate", currentDate)
-        if (currentDate != date) {
+        if (currentDate != dateInterno) {
             handleSetDateButtons(currentDate)
         }
         setShowDatePicker(!showDatePicker);
-        setDate(currentDate);
+        setDateInterno(currentDate);
     }
     const handleClickOtherDate = () => {
         setShowDatePicker(true);
@@ -136,7 +204,12 @@ export const DetailsScreen = ({ navigation }) => {
                 <TouchableOpacity style={styles.accountInputContainer} onPress={() => navigation.push("Accounts")}>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Icon type="material-community" name="account-cash-outline" size={30} color="#707070" />
-                        <Text style={styles.accountText}> Seleccionar Cuenta</Text>
+                        {(accounts != "" && accountsInterno[account]) ? 
+                        <View style={styles.categoryContainer}>
+                            <Icon type="material-community" name={accountsInterno[account]["icon"]} size={20} color={(type === "egreso")? "#c0372f" : "#3e8d3e"}/>
+                            <Text style={{fontSize: 14,marginLeft: 10, color: (type === "egreso")? "#c0372f" : "#3e8d3e" }}>{accountsInterno[account].title.substr(0, 10)}...</Text>
+                        </View> : <Text style={styles.accountText}> Seleccionar Cuenta</Text>}
+                        
                     </View>
                     <View>
                         <Icon type="material-community" name="chevron-right" size={30} color="#8c8b91" />
@@ -152,8 +225,8 @@ export const DetailsScreen = ({ navigation }) => {
                 <View style={styles.descriptionInput}>
                     <Icon type="material-community" name="pencil-outline" size={30} color="#707070" />
                     <TextInput onChangeText={() => console.log()}
-                        value={description}
-                        onChangeText={setDescription}
+                        value={descriptionInterno}
+                        onChangeText={setDescriptionInterno}
                         placeholder="Descripcion"
                         style={styles.descriptionInputItem}
                     >
@@ -169,7 +242,11 @@ export const DetailsScreen = ({ navigation }) => {
                 <TouchableOpacity style={styles.categoryInputContainer} onPress={() => navigation.push("Categories")}>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Icon type="material-community" name="tag-outline" size={30} color="#707070" />
-                        <Text style={styles.categoryText}> Seleccionar Categoria</Text>
+                        {(category != "" && categoriesInterno[category]) ? 
+                        <View style={styles.categoryContainer}>
+                            <Icon type="material-community" name={categoriesInterno[category]["icon"]} size={20} color={(type === "egreso")? "#c0372f" : "#3e8d3e"}/>
+                            <Text style={{fontSize: 14,marginLeft: 10, color: (type === "egreso")? "#c0372f" : "#3e8d3e" }}>{categoriesInterno[category].title.substr(0, 10)}...</Text>
+                        </View> : <Text style={styles.categoryText}> Seleccionar Categoria</Text>}
                     </View>
                     <View>
                         <Icon type="material-community" name="chevron-right" size={30} color="#8c8b91" />
@@ -182,14 +259,14 @@ export const DetailsScreen = ({ navigation }) => {
                     width={1}
                     orientation="horizontal"
                 />
-                <Button buttonStyle={styles.saveButtonStyle} title="Guardar" containerStyle={styles.saveButtonContainerStyle} onPress={() => console.log("press guardar")} />
+                <Button buttonStyle={styles.saveButtonStyle} title="Guardar" containerStyle={styles.saveButtonContainerStyle} onPress={() => addType("ingreso")} />
             </View>
             <View>
                 {showDatePicker && (
                     <DateTimePicker
                         locale="es-ES"
                         testID="dateTimePicker"
-                        value={date}
+                        value={dateInterno}
                         mode={'date'}
                         display="default"
                         onChange={handleOnChangeDatePicker}
@@ -294,7 +371,8 @@ const IncomeStyles = StyleSheet.create({
     descriptionInputItem: {
         fontSize: 14,
         marginLeft: 10,
-        overflow: "hidden"
+        overflow: "hidden",
+        color: "#3e8d3e"
     },
     accountInputContainer: {
         width: "100%",
@@ -330,6 +408,16 @@ const IncomeStyles = StyleSheet.create({
         borderRadius: 30,
         alignSelf: "center",
         marginTop: 70
+    },
+    categoryContainer:{
+        minWidth: 100,
+        borderRadius: 30,
+        borderColor: "#3e8d3e",
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
     }
 
 });
@@ -428,7 +516,8 @@ const OutcomeStyles = StyleSheet.create({
     descriptionInputItem: {
         fontSize: 14,
         marginLeft: 10,
-        overflow: "hidden"
+        overflow: "hidden",
+        color: "#c0372f"
     },
     accountInputContainer: {
         width: "100%",
@@ -464,5 +553,15 @@ const OutcomeStyles = StyleSheet.create({
         borderRadius: 30,
         alignSelf: "center",
         marginTop: 70
+    },
+    categoryContainer:{
+        minWidth: 100,
+        borderRadius: 30,
+        borderColor: "#3e8d3e",
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
     }
 });

@@ -9,7 +9,7 @@ const initialState = {
     account: "",
     description: "",
     date: "",
-    type: "egreso",
+    type: "ingreso",
     errorMessageTransaction: ""
 }
 
@@ -90,7 +90,7 @@ export const TransactionProvider = ({ children }) => {
         }
     }
     const addDate = (date = "") => {
-        if (date = "") {
+        if (date === "") {
             dispatch({
                 type: types.addErrorMessageTransaction,
                 payload: {
@@ -107,7 +107,9 @@ export const TransactionProvider = ({ children }) => {
         }
     }
     const addType = (type) => {
-        if (type = "") {
+        console.log(type, "lo que llego al type")
+        console.log("entrando a type")
+        if (type === "") {
             dispatch({
                 type: types.addErrorMessageTransaction,
                 payload: {
@@ -115,6 +117,7 @@ export const TransactionProvider = ({ children }) => {
                 }
             })
         } else {
+            console.log("me llego un type")
             dispatch({
                 type: types.addType,
                 payload: {

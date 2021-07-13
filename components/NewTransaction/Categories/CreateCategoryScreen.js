@@ -17,7 +17,7 @@ import { UserContext } from "../../Context/UserContext";
 const totalHeight = Dimensions.get("window").height * 0.75;
 const marginTop = Dimensions.get("window").height * 0.25;
 
-export const CreateCategory = ({ navigation }) => {
+export const CreateCategoryScreen = ({ navigation }) => {
   const { addCategory, categories } = useContext(UserContext);
 
   const { type } = useContext(TransactionContext);

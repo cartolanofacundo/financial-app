@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, TouchableHighlight, Dimensions } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { Theme } from "../../../Theme/Theme";
+import { TransactionContext } from "../../Context/TransactionContext";
 
 export const NewTransactionScreen = ({ navigation }) => {
-  const handleNavigation = (ruta) => {
-    navigation.replace(ruta);
+  const {addType} = useContext(TransactionContext)
+  const handleNavigation = (type) => {
+    addType(type)
+    navigation.replace("Transaction detail");
   };
   return (
     <View
@@ -46,7 +49,7 @@ export const NewTransactionScreen = ({ navigation }) => {
             }}
             titleStyle={{ color: "white", fontSize: 15, fontWeight: "100" }}
             containerStyle={{}}
-            onPress={() => handleNavigation("Transaction detail")}
+            onPress={() => handleNavigation("egreso")}
           />
         </View>
         <View style={{ flex: 1, justifyContent: "flex-end" }}>
@@ -68,7 +71,7 @@ export const NewTransactionScreen = ({ navigation }) => {
             }}
             titleStyle={{ color: "white", fontSize: 15, fontWeight: "100" }}
             containerStyle={{ marginBottom: 20 }}
-            onPress={() => handleNavigation("Transaction detail")}
+            onPress={() => handleNavigation("ingreso")}
           />
         </View>
         <View style={{ flex: 1, justifyContent: "flex-end" }}>

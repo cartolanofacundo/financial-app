@@ -9,16 +9,9 @@ import { TransactionsScreen } from "../components/Transactions/TransactionsScree
 import { Theme } from "../Theme/Theme";
 import { TouchableOpacity } from "react-native";
 import { NewTransactionScreen } from "../components/NewTransaction/OverlayButtons/NewTransactionScreen";
-import { UserProvider } from "../components/Context/UserContext";
+import { TransactionStack } from "./TransactionStack";
 
-const UserState = ({ children }) => {
-  return (
-    <UserProvider>
-      {children}
-    </UserProvider>
-  )
 
-}
 const Tab = createBottomTabNavigator();
 
 const CustomTabBarButton = ({ children, onPress }) => (
@@ -45,7 +38,6 @@ const CustomTabBarButton = ({ children, onPress }) => (
 
 export const HomeStack = () => {
   return (
-    <UserProvider>
       <Tab.Navigator
         tabBarOptions={{
           showLabel: false,
@@ -113,7 +105,7 @@ export const HomeStack = () => {
         />
         <Tab.Screen
           name="AddTransaction"
-          component={NewTransactionScreen}
+          component={TransactionStack}
           options={{
             tabBarIcon: ({ focused }) => (
               <Icon type="material" name="add" size={35} color="white" />
@@ -180,6 +172,5 @@ export const HomeStack = () => {
           }}
         />
       </Tab.Navigator>
-    </UserProvider>
   );
 };

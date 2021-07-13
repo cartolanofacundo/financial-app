@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text, Dimensions, FlatList, TextInput } from 'react-native'
+import { TransactionContext } from '../../Context/TransactionContext';
 
 const totalHeight = Dimensions.get('window').height * 0.75
 const marginTop = Dimensions.get('window').height * 0.25
 
 export const CalculatorScreen = ({navigation}) => {
+    const {addAmount} = useContext(TransactionContext)
     const buttons = ['AC', 'DEL', '%', '/', '7', '8', '9', '*', '4', '5', '6', '-', '1', '2', '3', '+', '0', '.', '=', 'OK']
     const [miNumero, setMiNumero] = useState(0)
     const [currentNumber, setCurrentNumber] = useState("")
@@ -26,6 +28,7 @@ export const CalculatorScreen = ({navigation}) => {
             calculator()
             let numeroMio = parseFloat(currentNumber)
             setMiNumero(numeroMio);
+            addAmount(numeroMio);
             navigation.pop()
             return
         }if(buttonPressed === "AC"){
