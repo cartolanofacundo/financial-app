@@ -1,15 +1,5 @@
 import { types } from "../../data/types";
 
-const initialState = {
-    token: null,
-    user: null,
-    status: 'non-authenticated',
-    errorMessage: "",
-    successMessage: "",
-    errorMessageSignUp: "", 
-}
-
-
 export const authReducer = (state, action) => {
     switch (action.type) {
         case types.logIn:
@@ -60,6 +50,11 @@ export const authReducer = (state, action) => {
             return{
                 ...state,
                 errorMessageSignUp: ""
+            }
+        case types.checking:
+            return{
+                ...state,
+                status: "waiting"
             }
         default:
             return state;

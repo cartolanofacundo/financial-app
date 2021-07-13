@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { Text, Icon } from "react-native-elements";
 import { Theme } from "../../Theme/Theme"
 import { ScrollView } from "react-native";
+import { AuthContext } from "../Context/AuthContext";
+import { UserContext } from "../Context/UserContext";
 
 export const HomeScreen = ({ navigation }) => {
+    const {categories, balance, accounts, transactions, transfers, getCategories, addTransaction} = useContext(UserContext)
+    //borrar
+    // const type = "egreso"
+    // const category = "60dceeec2894d90015e29e18"
+    // const description = "testeando desde la app"
+    // const amount = 2000
+    // const account = "60dceeec2894d90015e29e1a"
+    // const date = new Date()
+    //borrar
     const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
     let mesActual = new Date().getMonth();
     let anioActual = new Date().getFullYear();
     const totalHeight = Dimensions.get('window').height
     const categoriesHeight = (Dimensions.get('screen').height < 800) ? 220 : 280
+
     return (
         <View style={styles.screenContainer}>
             <View style={styles.headerContainer}>

@@ -1,15 +1,7 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
-import { Button, Image, Text } from "react-native-elements";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { Image, Text } from "react-native-elements";
 import { Theme } from "../../Theme/Theme";
-import { InputCustom } from "../Custom/InputCustom";
-import * as Yup from "yup";
-import { useFormik } from "formik";
-import jwt_decode from "jwt-decode";
-import { UserContext } from "../Context/UserContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthContext } from "../Context/AuthContext";
 import { ActivityIndicator } from "react-native";
 
 export const Loader = ({ navigation }) => {
@@ -68,14 +60,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   background: {
-    // flex: 1,
     resizeMode: "cover",
-    // justifyContent: "center",
     paddingHorizontal: 20,
     paddingTop: 40,
     alignItems: "center",
-    // height: Dimensions.get('window').height,
-    // width: Dimensions.get('window').width,
   },
   welcomeTextContainer: {
     marginTop: 50,

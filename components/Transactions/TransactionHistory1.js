@@ -43,14 +43,11 @@ export const TransactionHistory = ({ navigation }) => {
     categories.forEach((cat) => {
       categoriesObject[cat._id] = cat.title;
     });
-    console.log("cart Obj", categoriesObject);
     setCategoriasObtenidas((prev) => {
-      console.log("cart Obj en call", categoriesObject);
 
       prev = categoriesObject["60dceeec2894d90015e29e17"];
       return prev;
     });
-    console.log(categoriasObtenidas, "CAT OBTENIDAS HANDLE");
   };
 
   //   const mostrarCategoria = async (id) => {

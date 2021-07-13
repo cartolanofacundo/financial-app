@@ -13,7 +13,6 @@ export const Success = ({ navigation, show, toggleModal }) => {
   const [navegando, setNavegando] = useState(false)
   const handleSubmit = () => {
     setNavegando(true)
-    console.log(navegando)
     navigateTo("Log In")
 
   };

@@ -7,8 +7,27 @@ export const types = {
     notAuthenticated: '[auth] notAuthenticated',
     addErrorSignUp: '[auth] addErrorSignUp',
     removeErrorSignUp: '[auth] removeErrorSignUp',
-}
+    cheching: '[auth] checking',
+    getInitialDAta: '[user] getInitialData',
+    getCatogries: '[user] getCategories',
+    addCategory: '[user] addCategory',
+    addAccount: '[user] addAccount',
+    getAccounts: '[user] getAccounts',
+    addTrasaction: '[user] addTransaction',
+    getTransactions: '[user] getTransactions',
+    getBalance: '[user] getBalance',
+    addTranfer: '[user] addTransfer',
+    getTransfers: '[user] getTransfers',
+    addErrorFetch: '[user] addErrorFetch',
+    removeErrorFetch: '[user] removeErrorFetch',
+    addAmount: '[newTransaction] addAmount',
+    addAccountId: '[newTransaction] addAccountId',
+    addCategoryId: '[newTransaction] addCategoryId',
+    addDescription: '[newTransaction] addDescription',
+    addDate: '[newTransaction] addDate',
+    addType: '[newTransaction] addType',
+    resetTransaction: '[newTransaction] resetTransaction',
+    changeToTransfer: '[newTransaction] changeToTransfer',
+    addErrorTransaction: '[newTransaction] addErrorMessage'
+};
 
-//signUp = payload.user
-//signIn = payload.user && payload.token
-//logOut = no necesita payload

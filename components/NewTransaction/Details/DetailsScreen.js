@@ -1,7 +1,8 @@
-import React, { useState, useContext, useEffect} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { StyleSheet, TouchableOpacity, View, Text, Dimensions, FlatList, TextInput } from 'react-native'
 import { Icon, Divider, Button } from "react-native-elements"
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { TransactionContext } from "../../Context/TransactionContext";
 
 const dateButtonsInitial = [
     {
@@ -19,9 +20,9 @@ const dateButtonsInitial = [
 ]
 
 
-export const DetailsScreen = ({ type = "egreso", navigation }) => {
+export const DetailsScreen = ({ navigation }) => {
+    const {type, amount} = useContext(TransactionContext)
     const styles = ((type === "ingreso") ? IncomeStyles : OutcomeStyles)
-    const [ammount, setAmmount] = useState(0);
     const [dateButtons, setDateButtons] = useState([...dateButtonsInitial])
     const [selectedDateId, setSelectedDateId] = useState("today")
     const [showDatePicker, setShowDatePicker] = useState(false)
@@ -41,16 +42,13 @@ export const DetailsScreen = ({ type = "egreso", navigation }) => {
             setDateButtons([...dateButtonsInitial])
         } else {
             setDateButtons((prev) => {
-                console.log("primer estado", prev)
                 for (let index = prev.length; index >= 0; index--) {
                     prev.pop()
                 }
-                console.log("segundo estado", prev)
                 prev.push({
                     title: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
                     key: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
                 })
-                console.log("ultimo estado", prev)
                 return prev
             })
         }
@@ -109,9 +107,9 @@ export const DetailsScreen = ({ type = "egreso", navigation }) => {
                         <Text style={styles.name}>{type.charAt(0).toUpperCase() + type.slice(1)}</Text>
                     </View>
                 </View>
-                <View style={styles.ammountContainer}>
-                    <Text style={styles.ammountTitle}>Valor de los ingresos</Text>
-                    <Text onPress={() => navigation.push("Calculator")} style={styles.ammount}>$ {ammount.toFixed(2)}</Text>
+                <View style={styles.amountContainer}>
+                    <Text style={styles.amountTitle}>Valor de los ingresos</Text>
+                    <Text onPress={() => navigation.push("Calculator")} style={styles.amount}>$ {amount.toFixed(2)}</Text>
                 </View>
             </View>
             <View style={styles.transactionDetail}>
@@ -230,14 +228,14 @@ const IncomeStyles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold"
     },
-    ammountContainer: {
+    amountContainer: {
         marginTop: 20,
     },
-    ammountTitle: {
+    amountTitle: {
         fontSize: 14,
         color: "white"
     },
-    ammount: {
+    amount: {
         fontSize: 24,
         color: "white",
         fontWeight: "bold",
@@ -364,14 +362,14 @@ const OutcomeStyles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold"
     },
-    ammountContainer: {
+    amountContainer: {
         marginTop: 20,
     },
-    ammountTitle: {
+    amountTitle: {
         fontSize: 14,
         color: "white"
     },
-    ammount: {
+    amount: {
         fontSize: 24,
         color: "white",
         fontWeight: "bold",

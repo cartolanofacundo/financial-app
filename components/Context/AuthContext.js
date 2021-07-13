@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useEffect } from "react";
+import React, { createContext, useReducer, useEffect} from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authReducer } from "./authReducer";
 
@@ -6,18 +6,8 @@ import financeApi from "../../api/financeApi";
 
 import { types } from "../../data/types";
 
-
-const initialState = {
-    token: null,
-    user: null,
-    status: 'non-authenticated',
-    errorMessage: "",
-    successMessage: "",
-    errorMessageSignUp:"", 
-}
-
 const authInitialState = {
-    status: "non-authenticated",
+    status: "waiting",
     token: null,
     user: null,
     errorMessage: "",
@@ -25,19 +15,16 @@ const authInitialState = {
     errorMessageSignUp: "",
 }
 
-export const AuthContext = createContext(initialState);
+export const AuthContext = createContext(authInitialState);
 
 export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, authInitialState);
+
+    
     const checkToken = async () => {
         const token = await AsyncStorage.getItem('token');
         if (token) {
-            console.log(token);
-            const userId = await AsyncStorage.getItem('userId');
-            if (userId) {
-                console.log(userId)
-                getUser(userId, token)
-            }
+            getUser(token)
         } else {
             dispatch({
                 type: types.notAuthenticated,
@@ -45,23 +32,31 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    const getUser = async (userId, token) => {
+    const getUser = async (token) => {
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
         try {
-            console.log("este", userId)
-            const { data } = await financeApi.get(`/users/${userId}`, config);
-            console.log(data);
-            dispatch({
-                type: types.logIn,
-                payload: {
-                    token: token,
-                    user: data
-                }
-            })
+            const { data } = await financeApi.get(`/token`, config);
+            if(data.tokenValid){
+                dispatch({
+                    type: types.logIn,
+                    payload: {
+                        token: token,
+                        user: data.user
+                    }
+                })
+            }else{
+                dispatch({
+                    type: types.notAuthenticated
+                })
+            }
+            
         } catch (error) {
-            console.log(error.response.data);
+            console.log(error.message)
+            dispatch({
+                type: types.notAuthenticated,
+            })
         }
 
 
@@ -90,8 +85,6 @@ export const AuthProvider = ({ children }) => {
                 }
             })
             await AsyncStorage.setItem('token', data.token);
-            await AsyncStorage.setItem('userId', data.user._id)
-            return data;
         } catch (error) {
             dispatch({
                 type: types.addError,
@@ -104,17 +97,16 @@ export const AuthProvider = ({ children }) => {
 
     const logOut = async () => {
         await AsyncStorage.removeItem('token');
-        await AsyncStorage.removeItem('userId');
         dispatch({
             type: types.logOut
         })
     };
 
-    const registrarse = async ({first, last, email, password, repeat_password}) => {
-        try{
+    const registrarse = async ({ first, last, email, password, repeat_password }) => {
+        try {
             const response = await financeApi.post('/users/', {
                 first,
-                last, 
+                last,
                 email,
                 password,
                 repeat_password
@@ -122,7 +114,7 @@ export const AuthProvider = ({ children }) => {
             dispatch({
                 type: types.signUp
             })
-        }catch(error){
+        } catch (error) {
             dispatch({
                 type: types.addErrorSignUp,
                 payload: {
@@ -130,8 +122,8 @@ export const AuthProvider = ({ children }) => {
                 }
             })
         }
-        
-        
+
+
     };
 
     const removeError = () => {

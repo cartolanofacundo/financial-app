@@ -26,8 +26,6 @@ export const AccountsScreen = ({ navigation }) => {
   };
   let handleSelectAccount = (id) => {
     setselectedId(id);
-    console.log(id);
-    //navigation pop
   };
   let newAccount = {
     _id: "-1",
