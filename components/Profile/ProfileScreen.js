@@ -81,7 +81,7 @@ export const ProfileScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.logout}>
+      <View>
         <Button
           title="X Logout"
           buttonStyle={styles.LogoutButton}
@@ -150,13 +150,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  logout: {
-    marginBottom: 50,
-  },
-  hasNotAccount: {
-    marginRight: 5,
-    fontWeight: "bold",
-  },
+  // logout: {
+  // },
+  // hasNotAccount: {
+  //   marginRight: 5,
+  //   fontWeight: "bold",
+  // },
   button: {
     width: 200,
     margin: 15,
@@ -166,7 +165,7 @@ const styles = StyleSheet.create({
   },
   LogoutButton: {
     width: 200,
-    margin: 15,
+    margin: 10,
     borderRadius: 30,
     paddingVertical: 10,
     backgroundColor: "red",
@@ -176,7 +175,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "stretch",
     justifyContent: "space-between",
-    marginTop: 25,
+    marginTop: 10,
   },
   vinculoRegistrarse: {
     color: Theme.colors.primary,
@@ -189,8 +188,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   welcomeTextContainer: {
-    marginTop: 50,
-    marginBottom: 20,
+    marginTop: 30,
+    marginBottom: 10,
     alignItems: "center",
   },
 });
