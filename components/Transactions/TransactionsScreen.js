@@ -1,16 +1,16 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FlatList } from "react-native";
 import { SafeAreaView, TouchableOpacity, Dimensions } from "react-native";
-import { Button, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-elements";
-import { accountsSample } from "../../data/sampleAccounts";
-import { categoriesSample } from "../../data/sampleCategories";
-import { sampleTransactions } from "../../data/sampleTransactions";
 import Moment from "moment";
 import "moment/locale/es";
 import { Theme } from "../../Theme/Theme";
+import { UserContext } from "../Context/UserContext";
 
 export const TransactionsScreen = ({ navigation }) => {
+  const { transactions, categories, accounts } = useContext(UserContext);
+
   const buttons = [
     {
       key: "todas",
@@ -26,21 +26,27 @@ export const TransactionsScreen = ({ navigation }) => {
     },
   ];
 
-  const [transactions, setTransactions] = useState([]);
-  const [categories, setCategories] = useState({});
-  const [accounts, setAccounts] = useState({});
+  // const [transactions, setTransactions] = useState([]);
+  // const [categories, setCategories] = useState({});
+  // const [accounts, setAccounts] = useState({});
   const [selectedDateId, setSelectedDateId] = useState("todas");
   const [showIncome, setShowIncome] = useState(true);
   const [showOutcome, setShowOutcome] = useState(true);
   const [buttonSelectedStyle, setButtonSelectedStyle] = useState(
     styles.buttonTodas
   );
+  const [categoriesTransformed, setCategoriesTransformed] = useState({});
+  const [accountsTransformed, setAccountsTransformed] = useState({});
 
   useEffect(() => {
-    setTransactions([...sampleTransactions]);
-    setAccounts(transformAccounts());
-    setCategories(transformCategories());
+    setCategoriesTransformed(transformCategories());
+    setAccountsTransformed(transformAccounts());
   }, []);
+
+  useEffect(() => {
+    setCategoriesTransformed(transformCategories());
+    setAccountsTransformed(transformAccounts());
+  }, [categories, accounts]);
 
   const handleCancel = () => {
     navigation.popToTop();
@@ -49,7 +55,7 @@ export const TransactionsScreen = ({ navigation }) => {
 
   const transformCategories = () => {
     let responseCategories = {};
-    categoriesSample.forEach((category) => {
+    categories.forEach((category) => {
       responseCategories[category._id] = category.title;
     });
     return responseCategories;
@@ -57,7 +63,7 @@ export const TransactionsScreen = ({ navigation }) => {
 
   const transformAccounts = () => {
     let responseAccounts = {};
-    accountsSample.forEach((account) => {
+    accounts.forEach((account) => {
       responseAccounts[account._id] = account.title;
     });
     return responseAccounts;
@@ -124,9 +130,9 @@ export const TransactionsScreen = ({ navigation }) => {
                 minWidth: 100,
               }}
             >
-              <Text>{categories[categoryId]}</Text>
+              <Text>{categoriesTransformed[categoryId]}</Text>
               <Text> | </Text>
-              <Text>{accounts[accountId]}</Text>
+              <Text>{accountsTransformed[accountId]}</Text>
             </View>
           </View>
           <View>
@@ -235,7 +241,7 @@ export const TransactionsScreen = ({ navigation }) => {
               data={transactions}
               renderItem={renderTransactions}
               keyExtractor={(item) => item._id}
-              extraData={transactions}
+              extraData={(transactions, categories, accounts)}
             />
           </SafeAreaView>
         </View>
