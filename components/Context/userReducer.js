@@ -35,9 +35,6 @@ export const userReducer = (state, action) => {
         case types.addTrasaction:{
             return{
                 ...state,
-                categories: [...action.payload.categories],
-                accounts: [...action.payload.accounts],
-                balance: action.payload.balance,
                 transactions: [...action.payload.transactions],
             }
         }

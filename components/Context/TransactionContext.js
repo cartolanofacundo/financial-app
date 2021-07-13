@@ -4,9 +4,9 @@ import { transactionReducer } from "./transactionReducer";
 import { UserContext } from "./UserContext";
 
 const initialState = {
-    amount: 10,
-    category: "",
-    account: "",
+    amount: 0,
+    category: null,
+    account: null,
     description: "",
     date: "",
     type: "ingreso",
@@ -140,10 +140,10 @@ export const TransactionProvider = ({ children }) => {
         if (state.errorMessageTransaction === "") {
             const data = {
                 type: state.type,
-                category: state.category,
+                category: state.category._id,
                 description: state.description,
                 amount: state.amount,
-                account: state.account,
+                account: state.account._id,
                 date: state.date
             }
             addTransaction(data)

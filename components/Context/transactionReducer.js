@@ -2,10 +2,10 @@ import { types } from "../../data/types";
 
 const initialState = {
     amount: 0,
-    category: "",
-    account: "",
+    category: {},
+    account: {},
     description: "",
-    date: "",
+    date: new Date(),
     type: "ingreso",
 }
 
