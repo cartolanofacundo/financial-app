@@ -15,12 +15,12 @@ const totalHeight = Dimensions.get("window").height * 0.75;
 const marginTop = Dimensions.get("window").height * 0.25;
 
 export const AccountsScreen = ({ navigation }) => {
-  const { accounts } = useContext(UserContext)
-  const { account, addAccountId, type } = useContext(TransactionContext)
+  const { accounts } = useContext(UserContext);
+  const { account, addAccountId, type } = useContext(TransactionContext);
 
   let handleSelectAccount = (item) => {
     addAccountId(item);
-    navigation.pop()
+    navigation.pop();
   };
 
   const renderItem = ({ item, index }) => {
@@ -29,7 +29,7 @@ export const AccountsScreen = ({ navigation }) => {
         <>
           <TouchableOpacity
             key={"-1"}
-            onPress={() => console.log("create Account")}
+            onPress={() => navigation.push("addAccount")}
             style={{ marginTop: 5 }}
           >
             <View
@@ -99,13 +99,17 @@ export const AccountsScreen = ({ navigation }) => {
               </View>
               <Icon
                 type="material-community"
-                name={(account && (item._id === account._id)) ? "check-circle" : "checkbox-blank-circle-outline"}
+                name={
+                  account && item._id === account._id
+                    ? "check-circle"
+                    : "checkbox-blank-circle-outline"
+                }
                 color={Theme.colors.primary}
               />
             </View>
           </TouchableOpacity>
         </>
-      )
+      );
     } else {
       return (
         <>
@@ -114,7 +118,6 @@ export const AccountsScreen = ({ navigation }) => {
             onPress={() => handleSelectAccount(item)}
             style={{ marginTop: 5 }}
           >
-
             <View
               style={{
                 flexDirection: "row",
@@ -146,17 +149,19 @@ export const AccountsScreen = ({ navigation }) => {
               </View>
               <Icon
                 type="material-community"
-                name={(account && (item._id === account._id)) ? "check-circle" : "checkbox-blank-circle-outline"}
+                name={
+                  account && item._id === account._id
+                    ? "check-circle"
+                    : "checkbox-blank-circle-outline"
+                }
                 color={Theme.colors.primary}
               />
             </View>
           </TouchableOpacity>
         </>
-
       );
     }
-
-  }
+  };
 
   return (
     <View
