@@ -15,7 +15,7 @@ export const AboutUsScreen = () => {
         source={{
           uri: "https://pbs.twimg.com/profile_images/448117636287569920/i6N3fiFw_400x400.jpeg",
         }}
-        style={{ width: 75, height: 75, marginTop: 100 }}
+        style={{ width: 75, height: 75}}
       />
       <Text style={styles.texto}>Indala "Teclado Veloz" Briggiler</Text>
       <Image
@@ -32,12 +32,6 @@ export const AboutUsScreen = () => {
         style={{ width: 75, height: 75 }}
       />
       <Text style={styles.texto}>Max "Old Man" Zbinden</Text>
-
-      <Button
-        title="Regresar"
-        buttonStyle={styles.button}
-        onPress={goBack}
-      ></Button>
     </View>
   );
 };
