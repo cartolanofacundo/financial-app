@@ -6,16 +6,12 @@ import { DetailsScreen } from "../components/NewTransaction/Details/DetailsScree
 import { CalculatorScreen } from "../components/NewTransaction/Calculator/CalculatorScreen";
 import { NewTransactionScreen } from "../components/NewTransaction/OverlayButtons/NewTransactionScreen";
 import { TransactionProvider } from "../components/Context/TransactionContext";
+import { CreateAccountScreen } from "../components/NewTransaction/Accounts/CreateAccountScreen";
 const Stack = createStackNavigator();
 
 const TransactionState = ({ children }) => {
-  return (
-    <TransactionProvider>
-      {children}
-    </TransactionProvider>
-  )
-
-}
+  return <TransactionProvider>{children}</TransactionProvider>;
+};
 
 export const TransactionStack = () => {
   return (
@@ -96,6 +92,28 @@ export const TransactionStack = () => {
         <Stack.Screen
           name="buttons"
           component={NewTransactionScreen}
+          options={{
+            animationEnabled: true,
+            cardStyle: {
+              backgroundColor: "rgba(0,0,0,0.15)",
+            },
+            cardOverlayEnabled: true,
+            cardStyleInterpolator: ({ current: { progress } }) => {
+              return {
+                cardStyle: {
+                  backgroundColor: "transparent",
+                  // opacity: progress.interpolate({
+                  //   inputRange: [0, 0.5, 0.9, 1],
+                  //   outputRange: [0, 0.25, 0.7, 1]
+                  // })
+                },
+              };
+            },
+          }}
+        />
+        <Stack.Screen
+          name="addAccount"
+          component={CreateAccountScreen}
           options={{
             animationEnabled: true,
             cardStyle: {

@@ -45,7 +45,7 @@ export const AccountsScreen = ({ navigation }) => {
       return (
         <TouchableOpacity
           key={item._id}
-          onPress={() => console.log("createAccount")}
+          onPress={() => navigation.push("addAccount")}
           style={{ marginTop: 5 }}
         >
           <View
