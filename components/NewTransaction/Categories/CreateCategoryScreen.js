@@ -23,11 +23,6 @@ export const CreateCategoryScreen = ({ navigation }) => {
   const { type } = useContext(TransactionContext);
   const styles = type === "ingreso" ? IncomeStyles : OutcomeStyles;
   const [selectedIcon, setSelectedIcon] = useState("");
-
-  useEffect(() => {
-    console.log(categories, "CATEGORIES");
-  }, [categories]);
-
   const [title, setTitle] = useState("");
   const handleCancel = () => {
     // navigation.popToTop();
@@ -40,7 +35,6 @@ export const CreateCategoryScreen = ({ navigation }) => {
   };
 
   const handleSelectIcon = (id) => {
-    console.log("ID", id);
     setSelectedIcon(id);
   };
 

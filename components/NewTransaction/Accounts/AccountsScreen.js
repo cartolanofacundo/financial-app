@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import {
   View,
   Dimensions,
@@ -7,129 +7,156 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Icon } from "react-native-elements";
-import { accountsSample } from "../../../data/sampleAccounts";
 import { Theme } from "../../../Theme/Theme";
+import { TransactionContext } from "../../Context/TransactionContext";
+import { UserContext } from "../../Context/UserContext";
+
+const totalHeight = Dimensions.get("window").height * 0.75;
+const marginTop = Dimensions.get("window").height * 0.25;
 
 export const AccountsScreen = ({ navigation }) => {
-  // let handleCreateAccount = () =>{
-  //     setAccounts((prevAccounts) => {
-  //         prevAccounts.pop()
-  //         return [...prevAccounts]
-  //     })
-  // }
-  let initialAccounts = () => {
-    let accounts = accountsSample;
-    if (accounts[accounts.length - 1]._id != "-1") {
-      accounts.push(newAccount);
-    }
-    return accounts;
+  const { accounts } = useContext(UserContext)
+  const { account, addAccountId, type } = useContext(TransactionContext)
+
+  let handleSelectAccount = (item) => {
+    addAccountId(item);
+    navigation.pop()
   };
-  let handleSelectAccount = (id) => {
-    setselectedId(id);
-  };
-  let newAccount = {
-    _id: "-1",
-    title: "Crear nueva Cuenta",
-    icon: {
-      type: "material-community",
-      name: "plus-circle",
-    },
-    balance: null,
-  };
-  const [accounts, setAccounts] = useState(initialAccounts);
-  const totalHeight = Dimensions.get("window").height * 0.75;
-  const marginTop = Dimensions.get("window").height * 0.25;
-  const [selectedId, setselectedId] = useState(null);
-  const renderItem = ({ item }) => {
-    if (item._id === "-1") {
+
+  const renderItem = ({ item, index }) => {
+    if (index === 0) {
       return (
-        <TouchableOpacity
-          key={item._id}
-          onPress={() => console.log("createAccount")}
-          style={{ marginTop: 5 }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
+        <>
+          <TouchableOpacity
+            key={"-1"}
+            onPress={() => console.log("create Account")}
+            style={{ marginTop: 5 }}
           >
             <View
               style={{
                 flexDirection: "row",
+                width: "100%",
                 alignItems: "center",
                 justifyContent: "space-between",
               }}
             >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Icon
+                  type="material-community"
+                  name="plus-circle"
+                  size={50}
+                  color="#BDBDBD"
+                />
+                <Text style={{ marginLeft: 20 }}>Crear nueva categoria</Text>
+              </View>
               <Icon
-                type={item.icon.type}
-                name={item.icon.name}
-                size={50}
+                type="material-community"
+                name="chevron-right"
                 color="#BDBDBD"
+                size={25}
               />
-              <Text style={{ marginLeft: 20 }}>{item.title}</Text>
             </View>
-            <Icon
-              type="material-community"
-              name="chevron-right"
-              color="#BDBDBD"
-              size={25}
-            />
-          </View>
-        </TouchableOpacity>
-      );
+          </TouchableOpacity>
+          <TouchableOpacity
+            key={item._id}
+            onPress={() => handleSelectAccount(item)}
+            style={{ marginTop: 5 }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Icon
+                  type={item.icon.type}
+                  name={item.icon.name}
+                  color="white"
+                  size={29}
+                  containerStyle={{
+                    marginLeft: 3,
+                    backgroundColor: Theme.colors.primary,
+                    borderRadius: 50,
+                    padding: 7,
+                  }}
+                />
+                <Text style={{ marginLeft: 20 }}>{item.title}</Text>
+              </View>
+              <Icon
+                type="material-community"
+                name={(account && (item._id === account._id)) ? "check-circle" : "checkbox-blank-circle-outline"}
+                color={Theme.colors.primary}
+              />
+            </View>
+          </TouchableOpacity>
+        </>
+      )
     } else {
       return (
-        <TouchableOpacity
-          key={item._id}
-          onPress={() => handleSelectAccount(item._id)}
-          style={{ marginTop: 5 }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
+        <>
+          <TouchableOpacity
+            key={item._id}
+            onPress={() => handleSelectAccount(item)}
+            style={{ marginTop: 5 }}
           >
+
             <View
               style={{
                 flexDirection: "row",
+                width: "100%",
                 alignItems: "center",
                 justifyContent: "space-between",
               }}
             >
-              <Icon
-                type={item.icon.type}
-                name={item.icon.name}
-                color="white"
-                size={29}
-                containerStyle={{
-                  marginLeft: 3,
-                  backgroundColor: Theme.colors.primary,
-                  borderRadius: 50,
-                  padding: 7,
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
                 }}
+              >
+                <Icon
+                  type={item.icon.type}
+                  name={item.icon.name}
+                  color="white"
+                  size={29}
+                  containerStyle={{
+                    marginLeft: 3,
+                    backgroundColor: Theme.colors.primary,
+                    borderRadius: 50,
+                    padding: 7,
+                  }}
+                />
+                <Text style={{ marginLeft: 20 }}>{item.title}</Text>
+              </View>
+              <Icon
+                type="material-community"
+                name={(account && (item._id === account._id)) ? "check-circle" : "checkbox-blank-circle-outline"}
+                color={Theme.colors.primary}
               />
-              <Text style={{ marginLeft: 20 }}>{item.title}</Text>
             </View>
-            <Icon
-              type="material-community"
-              name={
-                item._id === selectedId
-                  ? "check-circle"
-                  : "checkbox-blank-circle-outline"
-              }
-              color={Theme.colors.primary}
-            />
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </>
+
       );
     }
-  };
+
+  }
 
   return (
     <View
@@ -151,7 +178,7 @@ export const AccountsScreen = ({ navigation }) => {
           data={accounts}
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
-          extraData={(selectedId, accounts)}
+          extraData={(account, accounts)}
         />
       </View>
     </View>

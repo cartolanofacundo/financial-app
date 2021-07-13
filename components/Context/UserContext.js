@@ -173,6 +173,7 @@ export const UserProvider = ({ children }) => {
     const addTransaction = async ({ type, category, description, amount, account, date }) => {
         const body = { type, category, description, amount, account, date }
         const data = await postFetch("transactions", body)
+        console.log(data)
         if (data === "No se ha podido agregar la transaccion") {
             dispatch({
                 type: types.addErrorFetch,
@@ -184,10 +185,7 @@ export const UserProvider = ({ children }) => {
             dispatch({
                 type: types.addTransaction,
                 payload: {
-                    categories: data.categories,
-                    accounts: data.accounts,
-                    balance: data.balance,
-                    transactions: data.transactions
+                    transactions: data.transaction
                 }
             })
         }
