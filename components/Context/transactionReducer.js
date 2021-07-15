@@ -23,6 +23,7 @@ export const transactionReducer = (state, action) => {
                 category: action.payload.category
             }
         case types.addDate:
+            console.log("estoy en addDate")
             return {
                 ...state,
                 date: action.payload.date

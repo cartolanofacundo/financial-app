@@ -170,10 +170,18 @@ export const UserProvider = ({ children }) => {
         }
 
     }
-    const addTransaction = async ({ type, category, description, amount, account, date }) => {
-        const body = { type, category, description, amount, account, date }
+    const addTransaction = async ({ type, categorySend: category, description, amount, accountSend: account, date }) => {
+        const body = {
+            type,
+            category,
+            description,
+            amount,
+            account,
+            date
+        }
         const data = await postFetch("transactions", body)
-        console.log(data);
+        console.log("entre primero aca! addTransaction()")
+        console.log(data.balance);
         if (data === "No se ha podido agregar la transaccion") {
             dispatch({
                 type: types.addErrorFetch,
@@ -183,9 +191,12 @@ export const UserProvider = ({ children }) => {
             })
         } else {
             dispatch({
-                type: types.addTransaction,
+                type: types.addTrasaction,
                 payload: {
-                    transactions: data.transaction
+                    transactions: data.transaction,
+                    accounts: data.accounts,
+                    categories: data.categories,
+                    balance: data.balance
                 }
             })
         }
@@ -234,11 +245,14 @@ export const UserProvider = ({ children }) => {
     const postFetch = async (route, body) => {
         if (user != null && token != null) {
             const config = {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: {
+                    'Content-Type': 'application/json;charset=UTF-8',
+                    "Access-Control-Allow-Origin": "*",
+                    Authorization: `Bearer ${token}`
+                }
             };
             try {
                 const { data } = await financeApi.post(`/${route}/${user._id}`, body, config);
-                console.log(da)
                 return data;
             } catch (error) {
                 console.log(error);
@@ -253,7 +267,7 @@ export const UserProvider = ({ children }) => {
             logOut();
         }
     }
-    const removeErrorUser = () =>{
+    const removeErrorUser = () => {
         dispatch({
             type: types.removeErrorUser
         })

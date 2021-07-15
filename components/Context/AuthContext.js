@@ -46,6 +46,7 @@ export const AuthProvider = ({ children }) => {
                         user: data.user
                     }
                 })
+            console.log(data);
             }else{
                 dispatch({
                     type: types.notAuthenticated

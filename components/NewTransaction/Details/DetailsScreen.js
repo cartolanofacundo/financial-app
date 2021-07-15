@@ -23,7 +23,7 @@ const dateButtonsInitial = [
 
 
 export const DetailsScreen = ({ navigation }) => {
-    const { type, amount, category, account, addDescription, addDate, submitTransaction, date, description } = useContext(TransactionContext)
+    const { type, amount, category, account, addDescription, addDate, date, description } = useContext(TransactionContext)
     const { categories, accounts, addTransaction } = useContext(UserContext)
 
 
@@ -36,28 +36,37 @@ export const DetailsScreen = ({ navigation }) => {
     const [dateInterno, setDateInterno] = useState(new Date())
     const [descriptionInterno, setDescriptionInterno] = useState("")
 
+    useEffect(() => {
+        console.log("id", selectedDateId)
+        navigation.push("Calculator")
+        if (selectedDateId === "today") {
+            addDate(new Date());
+        }
 
-    const handleInputText = (text) =>{
+    }, [])
+
+    const handleInputText = (text) => {
         setDescriptionInterno(text);
         addDescription(text);
     }
 
-    const handleSubmit = () =>{
-        if(selectedDateId === "today"){
+    const handleSubmit = () => {
+        if (selectedDateId === "today") {
             addDate(new Date());
-        }else if(selectedDateId === "yesterday"){
+        } else if (selectedDateId === "yesterday") {
             let yesterday = new Date();
             yesterday = moment().subtract(1, "days")
             addDate(yesterday)
-        }else{
+        } else {
             addDate(dateInterno)
         }
-        if(descriptionInterno != "" && category && account){
+        if (descriptionInterno != "" && category && account && amount != 0) {
+            let accountSend = account._id;
+            let categorySend = category._id;
             addDescription(descriptionInterno)
-            console.log(type, amount, category._id, account._id, date, description, type)
-            addTransaction({type, amount, category, account, date, description, type})
+            addTransaction({ amount, categorySend, accountSend, date, description, type })
             navigation.pop();
-        }else{
+        } else {
             return
         }
 
@@ -93,6 +102,7 @@ export const DetailsScreen = ({ navigation }) => {
         setShowDatePicker(!showDatePicker);
         setDateInterno(currentDate);
         addDate(currentDate);
+        console.log(date);
     }
 
     const handleClickOtherDate = () => {
@@ -100,6 +110,11 @@ export const DetailsScreen = ({ navigation }) => {
     }
 
     const handleSelectDate = (id) => {
+        if (id === "today") {
+            addDate(new Date())
+        } else if (id === "yesterday") {
+            addDate(moment().subtract(1, "days"))
+        }
         setSelectedDateId(id);
     }
 

@@ -11,9 +11,9 @@ import {
 import { Icon, Divider, Button } from "react-native-elements";
 import { TransactionContext } from "../../Context/TransactionContext";
 import { icons } from "../../../data/Icons";
-import { Theme } from "../../../Theme/Theme";
 import { UserContext } from "../../Context/UserContext";
 import { Input } from "react-native-elements/dist/input/Input";
+import { Theme } from "../../../Theme/Theme";
 
 const totalHeight = Dimensions.get("window").height * 0.75;
 const marginTop = Dimensions.get("window").height * 0.25;
@@ -300,6 +300,7 @@ const IncomeStyles = StyleSheet.create({
     borderRadius: 30,
     alignSelf: "center",
     marginTop: 70,
+    backgroundColor: Theme.colors.primary,
   },
 });
 

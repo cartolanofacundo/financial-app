@@ -136,23 +136,9 @@ export const TransactionProvider = ({ children }) => {
             type: types.removeErrorTransaction
         })
     }
-    const submitTransaction = () => {
-        if (state.errorMessageTransaction === "") {
-            const data = {
-                type: state.type,
-                category: state.category._id,
-                description: state.description,
-                amount: state.amount,
-                account: state.account._id,
-                date: state.date
-            }
-            addTransaction(data)
-        }
-    }
-
     return (
         <TransactionContext.Provider value={{
-            ...state, addAmount, addCategoryId, addAccountId, addDate, addDescription, removeErrorTransaction, submitTransaction, resetTransaction, addType
+            ...state, addAmount, addCategoryId, addAccountId, addDate, addDescription, removeErrorTransaction, resetTransaction, addType
         }}>
             {children}
         </TransactionContext.Provider>

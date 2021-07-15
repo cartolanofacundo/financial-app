@@ -65,8 +65,8 @@ export const HomeScreen = ({ navigation }) => {
         >
           <View style={{ flexDirection: "row" }}>
             <Icon
-              type="material"
-              name="person"
+              type="material-community"
+              name={item.icon.name}
               size={40}
               color="white"
               containerStyle={{
@@ -102,6 +102,18 @@ export const HomeScreen = ({ navigation }) => {
       );
     }
   };
+
+  useEffect(() => {
+    console.log("[!!!!LEEME] SE MODIFICO TRANSACCIONES", transactions.length)
+  }, [transactions])
+
+  useEffect(() => {
+    console.log("[!!!!LEEME] SE MODIFICO ACCOUNTS", accounts.length)
+  }, [accounts])
+
+  useEffect(() => {
+    console.log("[!!!!LEEME] SE MODIFICO CATEGORIES", categories.length)
+  }, [categories])
 
   return (
     <View style={styles.screenContainer}>

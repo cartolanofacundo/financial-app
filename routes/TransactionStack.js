@@ -111,7 +111,7 @@ export const TransactionStack = () => {
             },
           }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="addAccount"
           component={CreateAccountScreen}
           options={{
@@ -132,7 +132,7 @@ export const TransactionStack = () => {
               };
             },
           }}
-        />
+        /> */}
       </Stack.Navigator>
     </TransactionState>
   );
